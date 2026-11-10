@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manajemen Product</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=DM+Serif+Text:ital@0;1&family=Libertinus+Math&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/product.css" />
+    <link rel="stylesheet" href="/css/modal.css" />
+</head>
+
+<body>
+    <div class="product-container">
+        <%- include('../partials/sidebar') %>
+
+            <div class="main">
+                <div class="main-content">
+                    <div class="product-management-wrapper">
+                        <div class="content-header">
+                            <div class="title-section">
+                                <h1 class="page-title">Product Management</h1>
+                                <p class="page-subtitle">
+                                    <%= productLength %> products ·
+                                        <%= productCountSweet %> Sweet ·
+                                            <%= productCountSavory %> Savory
+                                </p>
+                            </div>
+                            <button class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                            <i class="fa-solid fa-plus me-2"></i> Tambah Product
+                        </button>
+                        </div>
+
+                        <div class="filter-search-row">
+                            <div class="filter-tabs">
+                                <button class="filter-btn active" data-filter="all">All Products</button>
+                                <button class="filter-btn" data-filter="sweet">Sweet Corner</button>
+                                <button class="filter-btn" data-filter="savory">Savory Corner</button>
+                            </div>
+
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="searchInput" placeholder="Search products..." class="search-input" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cards-scroll-container">
+                        <div class="row g-4">
+                            <% products.forEach(product => { %>
+                                <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="<%= product.category.toLowerCase() %>">
+                                    <div class="product-card">
+                                        <div class="card-image">
+                                            <img src="/img/<%= product.image %>" alt="<%= product.name %>" class="card-img-top" />
+
+                                            <div class="badge-left">
+                                                <% if (product.isActive === "ready stok") { %>
+                                                    <span class="badge-status badge-ready">Ready Stock</span>
+                                                    <% } else { %>
+                                                        <span class="badge-status badge-preorder">Pre Order</span>
+                                                        <% } %>
+                                                            <% if (product.isBestSeller) { %>
+                                                                <span class="badge-status badge-best">Best Seller</span>
+                                                                <% } %>
+                                            </div>
+
+                                            <div class="badge-right">
+                                                <span class="badge-category"><%= product.category %></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <h3 class="card-title">
+                                                <%= product.name %>
+                                            </h3>
+                                            <p class="card-description">
+                                                <%= product.description %>
+                                            </p>
+
+                                            <div class="card-footer-custom">
+                                                <div class="price">
+                                                    <% if (product.discount > 0) { %>
+                                                        <span class="price-old">Rp <%= Number(product.price).toLocaleString("id-ID") %></span>
+                                                        <% } %>
+                                                            <span class="currency">Rp</span>
+                                                            <%= Number(product.price * (1 - (product.discount || 0) / 100)).toLocaleString("id-ID") %>
+                                                                <% if (product.discount > 0) { %>
+                                                                    <span class="badge-discount">-<%= product.discount %>%</span>
+                                                                    <% } %>
+                                                </div>
+
+                                                <div class="button-group">
+                                                    <a href="/dashboard/detailProducts/<%= product._id %>" class="icon-button view-button" title="View Detail">
+                                                        <i class="fa-regular fa-eye"></i>
+                                                    </a>
+
+                                                    <button class="icon-button edit-button" data-bs-toggle="modal" data-bs-target="#editProductModal<%= product._id %>" title="Edit Product">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                </button>
+
+                                                    <form action="/dashboard/deleteProducts/<%= product._id %>" method="POST" class="delete-form needs-confirm" data-confirm-message="Apakah Anda yakin ingin menghapus produk ini?">
+                                                        <button type="submit" class="icon-button delete-button" title="Delete Product">
+                                                        <i class="fa-regular fa-trash-can"></i>
+                                                    </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ==================== EDIT PRODUCT MODAL ==================== -->
+                                <div class="modal fade" id="editProductModal<%= product._id %>" tabindex="-1" aria-labelledby="editProductModalLabel<%= product._id %>" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-edit-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div>
+                                                    <h5 class="modal-title" id="editProductModalLabel<%= product._id %>">
+                                                        <i class="fa-solid fa-pen-to-square me-2"></i> Edit Product
+                                                    </h5>
+                                                    <small>Perbarui informasi produk</small>
+                                                </div>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <form action="/dashboard/editProducts/<%= product._id %>" method="POST" enctype="multipart/form-data" class="needs-confirm" data-confirm-type="warning" data-confirm-message="Simpan perubahan produk ini?">
+
+                                                    <!-- Informasi Produk -->
+                                                    <div class="modal-section">
+                                                        <h6 class="modal-section-title">
+                                                            <i class="fa-solid fa-circle-info"></i> Informasi Produk
+                                                        </h6>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="name<%= product._id %>" class="form-label">Nama Produk</label>
+                                                                <input type="text" class="form-control" id="name<%= product._id %>" name="name" value="<%= product.name %>" required />
+                                                            </div>
+
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="category<%= product._id %>" class="form-label">Kategori</label>
+                                                                <select class="form-select" id="category<%= product._id %>" name="category" required>
+                                                                <option value="">Pilih Kategori</option>
+                                                                <% if (product.category === 'sweet') { %>
+                                                                    <option value="sweet" selected>Sweet</option>
+                                                                    <option value="savory">Savory</option>
+                                                                <% } else { %>
+                                                                    <option value="sweet">Sweet</option>
+                                                                    <option value="savory" selected>Savory</option>
+                                                                <% } %>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="price<%= product._id %>" class="form-label">Harga</label>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text">Rp</span>
+                                                                    <input type="number" class="form-control" id="price<%= product._id %>" name="price" value="<%= product.price %>" min="0" required />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="discount<%= product._id %>" class="form-label">Diskon</label>
+                                                                <div class="input-group">
+                                                                    <input type="number" class="form-control" id="discount<%= product._id %>" name="discount" value="<%= product.discount || 0 %>" min="0" max="100" />
+                                                                    <span class="input-group-text">%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="stock<%= product._id %>" class="form-label">Stok</label>
+                                                                <input type="number" class="form-control" id="stock<%= product._id %>" name="stock" value="<%= product.stock || 0 %>" min="0" required />
+                                                            </div>
+
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="isActive<%= product._id %>" class="form-label">Status Produk</label>
+                                                                <select class="form-select" id="isActive<%= product._id %>" name="isActive" required>
+                                                                <option value="">Pilih Status</option>
+                                                                <% if (product.isActive === 'ready stok') { %>
+                                                                    <option value="ready stok" selected>Ready Stok</option>
+                                                                    <option value="pre order">Pre Order</option>
+                                                                <% } else { %>
+                                                                    <option value="ready stok">Ready Stok</option>
+                                                                    <option value="pre order" selected>Pre Order</option>
+                                                                <% } %>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-check form-switch best-seller-switch mb-3">
+                                                            <% if (product.isBestSeller) { %>
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="bestSellerEdit<%= product._id %>" name="bestSeller" checked />
+                                                                <% } else { %>
+                                                                    <input class="form-check-input" type="checkbox" role="switch" id="bestSellerEdit<%= product._id %>" name="bestSeller" />
+                                                                    <% } %>
+                                                                        <label class="form-check-label" for="bestSellerEdit<%= product._id %>">
+                                                            <i class="fa-solid fa-fire" style="color: #d5a34a;"></i> Tandai sebagai Best Seller
+                                                        </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Deskripsi Produk -->
+                                                    <div class="modal-section">
+                                                        <h6 class="modal-section-title">
+                                                            <i class="fa-solid fa-align-left"></i> Deskripsi Produk
+                                                        </h6>
+
+                                                        <div class="mb-3">
+                                                            <label for="description<%= product._id %>" class="form-label">Deskripsi Singkat</label>
+                                                            <textarea class="form-control" id="description<%= product._id %>" name="description" rows="3" required><%= product.description || '' %></textarea>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="fullDescription<%= product._id %>" class="form-label">Deskripsi Lengkap</label>
+                                                            <textarea class="form-control" id="fullDescription<%= product._id %>" name="fullDescription" rows="4"><%= product.detail?.fullDescription || '' %></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Detail Produk -->
+                                                    <div class="modal-section">
+                                                        <h6 class="modal-section-title">
+                                                            <i class="fa-solid fa-list"></i> Detail Produk
+                                                        </h6>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="weight<%= product._id %>" class="form-label">Berat</label>
+                                                                <input type="text" class="form-control" id="weight<%= product._id %>" name="weight" value="<%= product.detail?.weight || '' %>" placeholder="Contoh: 250 gram" />
+                                                            </div>
+
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="servings<%= product._id %>" class="form-label">Servings</label>
+                                                                <input type="text" class="form-control" id="servings<%= product._id %>" name="servings" value="<%= Array.isArray(product.detail?.servings) ? product.detail.servings.join(', ') : (product.detail?.servings || '') %>" placeholder="Contoh: 2-3 orang" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="ingredients<%= product._id %>" class="form-label">Ingredients</label>
+                                                            <textarea class="form-control" id="ingredients<%= product._id %>" name="ingredients" rows="3" placeholder="Pisahkan bahan dengan koma"><%= Array.isArray(product.detail?.ingredients) ? product.detail.ingredients.join(', ') : (product.detail?.ingredients || '') %></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Gambar Produk -->
+                                                    <div class="modal-section">
+                                                        <h6 class="modal-section-title">
+                                                            <i class="fa-solid fa-image"></i> Gambar Produk
+                                                        </h6>
+
+                                                        <div class="mb-3">
+                                                            <label for="image<%= product._id %>" class="form-label">Gambar Utama</label>
+                                                            <input type="file" class="form-control" id="image<%= product._id %>" name="image" accept="image/*" />
+                                                            <% if (product.image) { %>
+                                                                <div class="image-preview mt-3">
+                                                                    <img src="/uploads/products/<%= product.image %>" alt="<%= product.name %>" style="max-height: 120px;" />
+                                                                </div>
+                                                                <% } %>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="gallery<%= product._id %>" class="form-label">Gallery</label>
+                                                            <input type="file" class="form-control" id="gallery<%= product._id %>" name="gallery" accept="image/*" multiple />
+                                                            <% if (product.detail?.gallery?.length) { %>
+                                                                <div class="gallery-preview mt-3 d-flex flex-wrap gap-2">
+                                                                    <% product.detail.gallery.forEach(function (image) { %>
+                                                                        <img src="/uploads/products/<%= image %>" alt="Gallery" style="width: 80px; height: 80px; object-fit: cover;" />
+                                                                        <% }); %>
+                                                                </div>
+                                                                <% } %>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-actions">
+                                                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-submit">
+                                                        <i class="fa-solid fa-floppy-disk me-2"></i> Simpan Perubahan
+                                                    </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- ==================== ADD PRODUCT MODAL ==================== -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title" id="addProductModalLabel">
+                            <i class="fa-solid fa-plus me-2"></i> Tambah Product
+                        </h5>
+                        <small>Tambahkan produk baru ke Cravely</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="/dashboard/tambahProducts" method="POST" enctype="multipart/form-data" class="needs-confirm" data-confirm-type="warning" data-confirm-message="Tambah produk baru ini?">
+
+                        <!-- Informasi Produk -->
+                        <div class="modal-section">
+                            <h6 class="modal-section-title">
+                                <i class="fa-solid fa-circle-info"></i> Informasi Produk
+                            </h6>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Nama Produk</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan nama produk" required />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="category" class="form-label">Kategori</label>
+                                    <select class="form-select" id="category" name="category" required>
+                                        <option value="">Pilih Kategori</option>
+                                        <option value="sweet">Sweet</option>
+                                        <option value="savory">Savory</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="price" class="form-label">Harga</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="number" class="form-control" id="price" name="price" placeholder="0" min="0" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="discount" class="form-label">Diskon</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="discount" name="discount" placeholder="0" min="0" max="100" value="0" />
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="stock" class="form-label">Stok</label>
+                                    <input type="number" class="form-control" id="stock" name="stock" placeholder="Masukkan jumlah stok" min="0" value="0" required />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="isActive" class="form-label">Status Produk</label>
+                                    <select class="form-select" id="isActive" name="isActive" required>
+                                        <option value="">Pilih Status</option>
+                                        <option value="ready stok">Ready Stok</option>
+                                        <option value="pre order">Pre Order</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-check form-switch best-seller-switch mb-3">
+                                <input class="form-check-input" type="checkbox" role="switch" id="bestSeller" name="bestSeller" />
+                                <label class="form-check-label" for="bestSeller">
+                                    <i class="fa-solid fa-fire" style="color: #d5a34a;"></i> Tandai sebagai Best Seller
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Deskripsi Produk -->
+                        <div class="modal-section">
+                            <h6 class="modal-section-title">
+                                <i class="fa-solid fa-align-left"></i> Deskripsi Produk
+                            </h6>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Deskripsi Singkat</label>
+                                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Masukkan deskripsi singkat produk" required></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="fullDescription" class="form-label">Deskripsi Lengkap</label>
+                                <textarea class="form-control" id="fullDescription" name="fullDescription" rows="4" placeholder="Masukkan deskripsi lengkap produk"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Detail Produk -->
+                        <div class="modal-section">
+                            <h6 class="modal-section-title">
+                                <i class="fa-solid fa-list"></i> Detail Produk
+                            </h6>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="weight" class="form-label">Berat</label>
+                                    <input type="text" class="form-control" id="weight" name="weight" placeholder="Contoh: 250 gram" />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="servings" class="form-label">Servings</label>
+                                    <input type="text" class="form-control" id="servings" name="servings" placeholder="Contoh: 2-3 orang" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="ingredients" class="form-label">Ingredients</label>
+                                <textarea class="form-control" id="ingredients" name="ingredients" rows="3" placeholder="Pisahkan bahan dengan koma"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Gambar Produk -->
+                        <div class="modal-section">
+                            <h6 class="modal-section-title">
+                                <i class="fa-solid fa-image"></i> Gambar Produk
+                            </h6>
+
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Gambar Utama</label>
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*" required />
+                            </div>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-submit">
+                                <i class="fa-solid fa-plus me-2"></i> Tambah Produk
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <%- include('../partials/confirm-modal') %>
+        <%- include('../partials/status-modal') %>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const filterButtons = document.querySelectorAll('.filter-btn');
+                    const searchInput = document.getElementById('searchInput');
+                    const productItems = document.querySelectorAll('.product-item');
+
+                    let currentFilter = 'all';
+                    let searchQuery = '';
+
+                    function filterProducts() {
+                        productItems.forEach((item) => {
+                            const titleElement = item.querySelector('.card-title');
+                            const productName = titleElement ? titleElement.textContent.toLowerCase() : '';
+
+                            const productCategory = item.getAttribute('data-category');
+                            const matchesCategory = currentFilter === 'all' || productCategory === currentFilter;
+                            const matchesSearch = productName.includes(searchQuery);
+
+                            if (matchesCategory && matchesSearch) {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    }
+
+                    filterButtons.forEach((button) => {
+                        button.addEventListener('click', function() {
+                            filterButtons.forEach((btn) => btn.classList.remove('active'));
+                            this.classList.add('active');
+
+                            currentFilter = this.getAttribute('data-filter');
+                            filterProducts();
+                        });
+                    });
+
+                    searchInput.addEventListener('input', function() {
+                        searchQuery = this.value.toLowerCase().trim();
+                        filterProducts();
+                    });
+                });
+            </script>
+</body>
+
+</html>

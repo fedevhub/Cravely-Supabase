@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Cravely</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/customer-pages.css">
+    <link rel="stylesheet" href="/css/admin-pages.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/enhancements.css">
+</head>
+<body class="profile-page <%= isAdmin ? 'admin-profile-page' : 'customer-page' %>">
+    <% if (isAdmin) { %>
+        <div class="dashboard-container">
+            <%- include('../partials/sidebar') %>
+            <main class="admin-page profile-content">
+    <% } else { %>
+        <%- include('../partials/navbar') %>
+        <main class="customer-shell profile-content">
+    <% } %>
+                <header class="profile-header">
+                    <div>
+                        <p class="profile-eyebrow">ACCOUNT SETTINGS</p>
+                        <h1>My Profile</h1>
+                        <p class="profile-subtitle">Kelola informasi akun dan data kontak kamu.</p>
+                    </div>
+                </header>
+                <section class="profile-card">
+                    <div class="profile-identity">
+                        <div class="avatar-initial"><%= (user.fullname || 'U').slice(0, 1).toUpperCase() %></div>
+                        <div>
+                            <h2><%= user.fullname %></h2>
+                            <p><i class="fa-solid fa-shield-halved"></i> <%= user.role === 'admin' ? 'Administrator' : 'Customer' %></p>
+                        </div>
+                    </div>
+                    <form class="customer-form profile-form needs-confirm" method="POST" action="/profile"
+                        data-confirm-message="Simpan perubahan profile kamu?">
+                        <div class="profile-form-grid">
+                            <label>Full name<input name="fullname" value="<%= user.fullname %>" required></label>
+                            <label>Username<input name="username" value="<%= user.username %>" required></label>
+                            <label>Email<input type="email" name="email" value="<%= user.email %>" required></label>
+                            <label>Phone number<input name="phoneNumber" value="<%= user.phoneNumber %>" required></label>
+                            <label class="full-field">Address<textarea name="address" required><%= user.address %></textarea></label>
+                            <label class="full-field">New password<input type="password" name="password" placeholder="Leave blank to keep current password"></label>
+                        </div>
+                        <div class="profile-form-actions"><button class="customer-button" type="submit"><i class="fa-solid fa-check"></i> Save changes</button></div>
+                    </form>
+                </section>
+    <% if (isAdmin) { %>
+            </main>
+        </div>
+    <% } else { %>
+        </main>
+    <% } %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <%- include('../partials/confirm-modal') %>
+</body>
+</html>

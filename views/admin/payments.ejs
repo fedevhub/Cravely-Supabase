@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manajemen Payment</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=DM+Serif+Text:ital@0;1&family=Libertinus+Math&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    />
+
+    <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/payment.css" />
+    <link rel="stylesheet" href="/css/modal.css" />
+  </head>
+
+  <body>
+    <div class="product-container">
+      <%- include('../partials/sidebar') %>
+
+      <div class="main">
+        <div class="main-content">
+          <div class="product-management-wrapper">
+            <div class="content-header">
+              <div class="title-section">
+                <h1 class="page-title">Payment Management</h1>
+                <p class="page-subtitle"><%= payments ? payments.length : 0 %> payments total</p>
+              </div>
+              <button class="btn-primary-custom" id="exportExcelBtn" type="button">
+                <i class="fas fa-download"></i> Export Excel
+              </button>
+            </div>
+
+            <div class="filter-search-row">
+              <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="waiting payment">Waiting Payment</button>
+                <button class="filter-btn" data-filter="confirmed">Confirmed</button>
+                <button class="filter-btn" data-filter="rejected">Rejected</button>
+              </div>
+
+              <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Search payments..."
+                  class="search-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="scroll-container">
+            <div class="custom-card mb-3 mt-3 card-admin-wrapper">
+              <div class="table-responsive">
+                <table class="table custom-table align-middle">
+                  <thead>
+                    <tr>
+                      <th>PAYMENT ID</th>
+                      <th>ORDER ID</th>
+                      <th>CUSTOMER</th>
+                      <th>METHOD</th>
+                      <th>AMOUNT</th>
+                      <th>SUBMITTED</th>
+                      <th>PROOF</th>
+                      <th>STATUS</th>
+                      <th class="text-end">AKSI</th>
+                    </tr>
+                  </thead>
+                  <tbody id="paymentsTableBody">
+                    <% if (payments && payments.length > 0) { %> <% payments.forEach(payment => { %>
+                    <tr
+                      data-status="<%= (payment.status || '').toLowerCase() %>"
+                      data-search="<%= [
+                                                    payment.paymentNumber,
+                                                    payment.order ? payment.order.orderNumber : '',
+                                                    payment.user ? payment.user.fullname : ''
+                                                ].join(' ').toLowerCase() %>"
+                    >
+                      <td class="payment-id"><%= payment.paymentNumber || '-' %></td>
+
+                      <td class="order-id">
+                        <%= payment.order ? payment.order.orderNumber : '-' %>
+                      </td>
+
+                      <td>
+                        <div class="customer-info">
+                          <div class="customer-name">
+                            <%= payment.user ? payment.user.fullname : '-' %>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="payment-method"><%= payment.paymentMethod || '-' %></div>
+                      </td>
+
+                      <td>
+                        <div class="payment-amount">
+                          Rp <%= (payment.totalAmount || 0).toLocaleString("id-ID") %>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="submitted-date">
+                          <%= payment.paymentDate ? new
+                          Date(payment.paymentDate).toLocaleString("en-US", { month: "short", day:
+                          "numeric", hour: "2-digit", minute: "2-digit" }) : '-' %>
+                        </div>
+                      </td>
+
+                      <td>
+                        <% if (payment.paymentProof) { %>
+                        <button
+                          type="button"
+                          class="proof-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#proofModal<%= payment._id %>"
+                        >
+                          <i class="fa-regular fa-eye"></i> View
+                        </button>
+                        <% } else { %>
+                        <span class="text-muted">-</span>
+                        <% } %>
+                      </td>
+
+                      <td>
+                        <% if (payment.status === "Waiting Payment") { %>
+                        <span class="payment-status pending">
+                          <i class="fa-regular fa-clock"></i> Waiting Payment
+                        </span>
+                        <% } else if (payment.status === "Confirmed") { %>
+                        <span class="payment-status verified">
+                          <i class="fa-regular fa-circle-check"></i> Confirmed
+                        </span>
+                        <% } else if (payment.status === "Rejected") { %>
+                        <span class="payment-status rejected">
+                          <i class="fa-regular fa-circle-xmark"></i> Rejected
+                        </span>
+                        <% } else { %>
+                        <span class="payment-status">-</span>
+                        <% } %>
+                      </td>
+
+                      <td class="text-end">
+                        <div class="payment-actions justify-content-end">
+                          <% if (payment.status === "Waiting Payment") { %>
+                          <form
+                            action="/dashboard/payments/<%= payment._id %>/status"
+                            method="POST"
+                          >
+                            <input type="hidden" name="status" value="Payment Verification" />
+                            <button type="submit" class="action-btn verify-btn">
+                              <i class="fa-regular fa-circle-check"></i> Verify
+                            </button>
+                          </form>
+
+                          <form
+                            action="/dashboard/payments/<%= payment._id %>/status"
+                            method="POST"
+                          >
+                            <input type="hidden" name="status" value="Rejected" />
+                            <button type="submit" class="action-btn reject-btn">
+                              <i class="fa-regular fa-circle-xmark"></i> Reject
+                            </button>
+                          </form>
+                          <% } else if (payment.status === "Payment Verification") { %>
+                          <form
+                            action="/dashboard/payments/<%= payment._id %>/status"
+                            method="POST"
+                          >
+                            <input type="hidden" name="status" value="Confirmed" />
+                            <button type="submit" class="action-btn verify-btn">
+                              <i class="fa-regular fa-circle-check"></i> Confirm
+                            </button>
+                          </form>
+
+                          <form
+                            action="/dashboard/payments/<%= payment._id %>/status"
+                            method="POST"
+                          >
+                            <input type="hidden" name="status" value="Rejected" />
+                            <button type="submit" class="action-btn reject-btn">
+                              <i class="fa-regular fa-circle-xmark"></i> Reject
+                            </button>
+                          </form>
+
+                          <% } %>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- MODAL PROOF -->
+                    <% if (payment.paymentProof) { %>
+                    <div
+                      class="modal fade"
+                      id="proofModal<%= payment._id %>"
+                      tabindex="-1"
+                      aria-labelledby="proofModalLabel<%= payment._id %>"
+                      aria-hidden="true"
+                    >
+                      <div
+                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm"
+                      >
+                        <div class="modal-content custom-modal-content">
+                          <div class="modal-header custom-modal-header">
+                            <h5
+                              class="modal-title custom-modal-title"
+                              id="detailPaymentModalLabel<%= payment._id %>"
+                            >
+                              Payment Proof
+                              <span class="order-id-badge">#<%= payment.paymentNumber %></span>
+                            </h5>
+                            <button
+                              type="button"
+                              class="btn-close btn-close-white"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div class="modal-body custom-modal-body">
+                            <div class="mb-3 text-center">
+                              <div class="custom-item-container">
+                                <img
+                                  src="/uploads/payment/<%= payment.paymentProof %>"
+                                  alt="Payment Proof"
+                                  class="payment-proof-image"
+                                />
+                              </div>
+                            </div>
+                            <div class="row g-3 mt-2 justify-content-end">
+                              <div class="col-6">
+                                <button
+                                  type="button"
+                                  class="btn btn-modal-batal w-100 py-2"
+                                  data-bs-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <% } %> <% }) %> <% } else { %>
+                    <tr>
+                      <td colspan="9" class="text-center py-4 text-muted">
+                        Belum ada data Payment.
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <!-- Filter Tabs & Search Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const searchInput = document.getElementById('searchInput');
+        const rows = document.querySelectorAll('#paymentsTableBody tr[data-status]');
+
+        let activeFilter = 'all';
+
+        function applyFilters() {
+          const searchTerm = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+          rows.forEach((row) => {
+            const status = row.getAttribute('data-status');
+            const searchable = row.getAttribute('data-search') || '';
+
+            const matchesFilter = activeFilter === 'all' || status === activeFilter;
+            const matchesSearch = searchable.includes(searchTerm);
+
+            row.style.display = matchesFilter && matchesSearch ? '' : 'none';
+          });
+        }
+
+        filterButtons.forEach((btn) => {
+          btn.addEventListener('click', function () {
+            filterButtons.forEach((b) => b.classList.remove('active'));
+            this.classList.add('active');
+            activeFilter = this.getAttribute('data-filter');
+            applyFilters();
+          });
+        });
+
+        if (searchInput) {
+          searchInput.addEventListener('input', applyFilters);
+        }
+
+        // Export Excel
+        const exportBtn = document.getElementById('exportExcelBtn');
+        if (exportBtn) {
+          exportBtn.addEventListener('click', function () {
+            const table = document.querySelector('.custom-table');
+            if (!table) {
+              alert('Tabel payment tidak ditemukan.');
+              return;
+            }
+
+            // Clone tabel untuk menghapus kolom Aksi dan Proof sebelum di-export
+            const tableClone = table.cloneNode(true);
+
+            // Hapus kolom aksi & proof (kolom ke-7 dan ke-9)
+            const rowsClone = tableClone.querySelectorAll('tr');
+            rowsClone.forEach((row) => {
+              if (row.children.length >= 9) {
+                row.children[8].remove(); // Hapus aksi
+                row.children[6].remove(); // Hapus proof
+              }
+            });
+
+            const wb = XLSX.utils.table_to_book(tableClone, { sheet: 'Payments' });
+            const today = new Date().toISOString().split('T')[0];
+            XLSX.writeFile(wb, `Payment_Report_${today}.xlsx`);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

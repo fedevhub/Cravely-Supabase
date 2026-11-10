@@ -1,0 +1,145 @@
+<div class="sidebar">
+  <!-- 1. Header (Tetap di atas) -->
+  <div class="sidebar-header">
+    <div class="logo-circle">C</div>
+    <div class="brand">
+      <h1>Cravely</h1>
+      <p>Admin Panel</p>
+    </div>
+  </div>
+
+  <!-- 2. Navigation Menu (Bisa di-scroll) -->
+  <div class="sidebar-nav">
+    <a href="/dashboard" class="<%= currentPath === '/dashboard' ? 'active' : '' %>">
+      <div class="nav-left">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </div>
+      <% if (currentPath==='/dashboard' ) { %>
+      <i class="fas fa-chevron-right nav-arrow"></i>
+      <% } %>
+    </a>
+
+    <a
+      href="/dashboard/products"
+      class="<%= currentPath === '/dashboard/products' ? 'active' : '' %>"
+    >
+      <div class="nav-left">
+        <i class="fas fa-box"></i>
+        <span>Products</span>
+      </div>
+      <% if (currentPath==='/dashboard/products' ) { %>
+      <i class="fas fa-chevron-right nav-arrow"></i>
+      <% } %>
+    </a>
+
+    <a href="/dashboard/users" class="<%= currentPath === '/dashboard/users' ? 'active' : '' %>">
+      <div class="nav-left">
+        <i class="fas fa-user-friends"></i>
+        <span>Users</span>
+      </div>
+      <% if (currentPath==='/dashboard/users' ) { %>
+      <i class="fas fa-chevron-right nav-arrow"></i>
+      <% } %>
+    </a>
+
+    <a href="/dashboard/orders" class="<%= currentPath === '/dashboard/orders' ? 'active' : '' %>">
+      <div class="nav-left">
+        <i class="fas fa-shopping-bag"></i>
+        <span>Orders</span>
+      </div>
+      <% if (currentPath==='/dashboard/orders' ) { %>
+      <i class="fas fa-chevron-right nav-arrow"></i>
+      <% } %>
+    </a>
+
+    <a
+      href="/dashboard/payments"
+      class="<%= currentPath === '/dashboard/payments' ? 'active' : '' %>"
+    >
+      <div class="nav-left">
+        <i class="fas fa-credit-card"></i>
+        <span>Payments</span>
+      </div>
+      <% if (currentPath==='/dashboard/payments' ) { %>
+      <i class="fas fa-chevron-right nav-arrow"></i>
+      <% } %>
+    </a>
+
+    <a
+      href="/dashboard/reviews"
+      class="<%= currentPath === '/dashboard/reviews' ? 'active' : '' %>"
+    >
+      <div class="nav-left">
+        <i class="far fa-star"></i>
+        <span>Reviews</span>
+      </div>
+      <% if (currentPath==='/dashboard/reviews' ) { %>
+      <i class="fas fa-chevron-right nav-arrow"></i>
+      <% } %>
+    </a>
+
+    <a
+      href="/dashboard/inventory"
+      class="<%= currentPath === '/dashboard/inventory' ? 'active' : '' %>"
+    >
+      <div class="nav-left">
+        <i class="fas fa-archive"></i>
+        <span>Inventory</span>
+      </div>
+      <% if (currentPath==='/dashboard/inventory' ) { %>
+      <i class="fas fa-chevron-right nav-arrow"></i>
+      <% } %>
+    </a>
+
+    <a
+      href="/dashboard/analytics"
+      class="<%= currentPath === '/dashboard/analytics' ? 'active' : '' %>"
+    >
+      <div class="nav-left">
+        <i class="fas fa-chart-bar"></i>
+        <span>Analytics</span>
+      </div>
+      <% if (currentPath==='/dashboard/analytics' ) { %>
+      <i class="fas fa-chevron-right nav-arrow"></i>
+      <% } %>
+    </a>
+
+    <a href="/profile" class="<%= currentPath === '/profile' ? 'active' : '' %>">
+      <div class="nav-left">
+        <i class="fas fa-user-cog"></i>
+        <span>Profile</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- 3. Footer (Tetap di bawah) -->
+  <div class="sidebar-footer">
+    <!-- 1. Notifications di bagian Bottom -->
+    <a
+      href="/notifications"
+      class="footer-link <%= currentPath === '/notifications' ? 'active' : '' %>"
+    >
+      <div class="nav-left">
+        <i class="far fa-bell"></i>
+        <span>Notifications</span>
+      </div>
+      <span class="badge">!</span>
+    </a>
+
+    <div class="user-profile">
+      <div class="avatar">A</div>
+      <div class="user-info">
+        <span class="user-name"> <%= session.user ? session.user.username : "User" %> </span>
+        <span class="user-email">
+          <%= session.user ? session.user.email : "user@cravely.id" %>
+        </span>
+      </div>
+    </div>
+
+    <a href="/auth/logout" class="exit-btn" onclick="return confirm('Yakin ingin logout?');">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Exit Admin</span>
+    </a>
+  </div>
+</div>

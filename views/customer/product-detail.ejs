@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.name %> | Cravely</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/product-customer.css">
+    <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/enhancements.css">
+</head>
+
+<body class="customer-detail-page">
+    <%- include("../partials/navbar") %>
+
+    <main class="container product-detail-shell">
+        <a href="/customer/products" class="detail-back">
+            <i class="fa-solid fa-arrow-left"></i> Back to menu
+        </a>
+
+        <section class="detail-hero">
+            <div class="detail-gallery">
+                <div class="detail-main-image">
+                    <img id="primaryImage" src="/img/<%= product.image %>" alt="<%= product.name %>">
+                    <form method="POST" action="/customer/wishlist/<%= product._id %>">
+                        <button class="detail-favorite <%= wishlistIds.includes(product._id.toString()) ? 'active-heart' : '' %>" type="submit" aria-label="Add to wishlist">
+                            <i class="fa-<%= wishlistIds.includes(product._id.toString()) ? 'solid' : 'regular' %> fa-heart"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="detail-info">
+                <div class="detail-category-row">
+                    <span class="detail-category">
+                        <i class="fa-solid fa-cookie-bite"></i> <%= product.category === 'sweet' ? 'Sweet Corner' : 'Savory Corner' %>
+                    </span>
+                    <span class="detail-chip"><%= product.category %></span>
+                    <span class="detail-chip"><%= product.isActive === 'pre order' ? 'Pre Order' : 'Ready Stock' %></span>
+                </div>
+
+                <h1><%= product.name %></h1>
+
+                <div class="detail-rating">
+                    <span class="stars">
+                        <% for (let star = 1; star <= 5; star++) { %>
+                            <i class="fa-<%= star <= Math.round(averageRating) ? 'solid' : 'regular' %> fa-star"></i>
+                        <% } %>
+                    </span>
+                    <strong><%= averageRating ? averageRating.toFixed(1) : 'New' %></strong>
+                    <span>(<%= reviews.length %> reviews)</span>
+                </div>
+
+                <div class="detail-price">
+                    <% const hasDiscount = product.discount > 0; %>
+                    <% const finalPrice = Math.round(product.price * (1 - (product.discount || 0) / 100)); %>
+                    <% if (hasDiscount) { %>
+                        <span class="price-old">Rp <%= Number(product.price).toLocaleString('id-ID') %></span>
+                    <% } %>
+                    Rp <%= Number(finalPrice).toLocaleString('id-ID') %>
+                    <% if (hasDiscount) { %>
+                        <span class="badge-discount">-<%= product.discount %>%</span>
+                    <% } %>
+                </div>
+
+                <div class="detail-metrics">
+                    <div>
+                        <span>Weight</span>
+                        <strong><%= product.detail?.weight || '-' %></strong>
+                    </div>
+                    <div>
+                        <span>Servings</span>
+                        <strong><%= product.detail?.servings || '-' %></strong>
+                    </div>
+                    <div>
+                        <span>Category</span>
+                        <strong><%= product.category %></strong>
+                    </div>
+                </div>
+
+                <div class="stock-summary">
+                    <div>
+                        <span>Stock available</span>
+                        <strong><%= product.stock ?? '-' %> of <%= product.stockCapacity ?? '-' %></strong>
+                    </div>
+                    <progress value="<%= product.stock || 0 %>" max="<%= product.stockCapacity || 1 %>"></progress>
+                </div>
+
+                <div class="quantity-row">
+                    <span>Quantity</span>
+                    <div class="quantity-control">
+                        <button type="button" data-step="-1">−</button>
+                        <strong id="quantityValue">1</strong>
+                        <button type="button" data-step="1">+</button>
+                    </div>
+                    <small>Max 5 per order</small>
+                </div>
+
+                <form method="POST" action="/customer/cart/<%= product._id %>">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="detail-add-cart <%= !isPreOrderOpen ? 'order-disabled' : '' %>" <%= isPreOrderOpen ? '' : 'disabled' %>>
+                        <i class="fa-solid fa-cart-shopping"></i> <%= isPreOrderOpen ? 'Add to Cart' : 'Pre-order Closed' %>
+                    </button>
+                </form>
+
+            </div>
+        </section>
+
+        <section class="detail-tabs">
+            <nav>
+                <button class="active" type="button" data-tab="description">Description</button>
+                <button type="button" data-tab="ingredients">Ingredients</button>
+                <button type="button" data-tab="reviews">Reviews (<%= reviews.length %>)</button>
+            </nav>
+
+            <div class="detail-tab-panel active" data-panel="description">
+                <p><%= product.detail?.fullDescription || product.description || 'Belum ada deskripsi untuk produk ini.' %></p>
+            </div>
+
+            <div class="detail-tab-panel" data-panel="ingredients">
+                <% if (product.detail?.ingredients?.length) { %>
+                    <div class="ingredient-list">
+                        <% product.detail.ingredients.forEach((item) => { %>
+                            <span><i class="fa-solid fa-leaf"></i> <%= item %></span>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p>Informasi bahan belum tersedia.</p>
+                <% } %>
+            </div>
+
+            <div class="detail-tab-panel" data-panel="reviews">
+                <% if (reviews.length) { %>
+                    <% reviews.forEach((review) => { %>
+                        <article class="review-item">
+                            <strong><%= review.user?.fullname || 'Customer' %></strong>
+                            <span class="stars">
+                                <% for (let star = 1; star <= 5; star++) { %>
+                                    <i class="fa-<%= star <= review.rating ? 'solid' : 'regular' %> fa-star"></i>
+                                <% } %>
+                            </span>
+                            <p><%= review.comment %></p>
+                        </article>
+                    <% }) %>
+                <% } else { %>
+                    <p>Belum ada review untuk produk ini.</p>
+                <% } %>
+
+                <% if (typeof canReview !== 'undefined' && canReview) { %>
+                <form class="review-form needs-confirm" method="POST" action="/customer/detailProducts/<%= product._id %>/reviews" data-confirm-message="Kirim review kamu sekarang?">
+                    <select name="rating" required>
+                        <option value="">Rating</option>
+                        <option value="5">5 stars</option>
+                        <option value="4">4 stars</option>
+                        <option value="3">3 stars</option>
+                        <option value="2">2 stars</option>
+                        <option value="1">1 star</option>
+                    </select>
+                    <textarea name="comment" rows="3" placeholder="Tulis review kamu..." required></textarea>
+                    <button type="submit">Submit review</button>
+                </form>
+                <% } else { %>
+                    <p class="text-muted"><i class="fa-solid fa-circle-info"></i> Kamu bisa memberi review setelah pesanan produk ini <strong>selesai (Completed)</strong>.</p>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <%- include('../partials/confirm-modal') %>
+    <script>
+        document.querySelectorAll('.detail-thumb').forEach((thumb) =>
+            thumb.addEventListener('click', () => {
+                document.querySelector('#primaryImage').src = thumb.dataset.image;
+                document.querySelectorAll('.detail-thumb').forEach((item) => item.classList.remove('active'));
+                thumb.classList.add('active');
+            })
+        );
+
+        document.querySelectorAll('[data-step]').forEach((button) =>
+            button.addEventListener('click', () => {
+                const output = document.querySelector('#quantityValue');
+                output.textContent = Math.max(1, Math.min(5, Number(output.textContent) + Number(button.dataset.step)));
+            })
+        );
+
+        document.querySelectorAll('[data-tab]').forEach((button) =>
+            button.addEventListener('click', () => {
+                document.querySelectorAll('[data-tab], [data-panel]').forEach((item) => item.classList.remove('active'));
+                button.classList.add('active');
+                document.querySelector(`[data-panel="${button.dataset.tab}"]`).classList.add('active');
+            })
+        );
+    </script>
+</body>
+
+</html>

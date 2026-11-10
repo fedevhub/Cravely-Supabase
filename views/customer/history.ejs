@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Order History | Cravely</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/customer-pages.css" />
+    <link rel="stylesheet" href="/css/enhancements.css" />
+  </head>
+  <body class="customer-page">
+    <%- include('../partials/navbar') %>
+    <main class="reference-page history-reference">
+      <h1>Order History</h1>
+      <p class="reference-lead"><%= orders.length %> orders total</p>
+      <div class="history-toolbar">
+        <div>
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="orderSearch" placeholder="Search by order ID or product name..." />
+        </div>
+        <select id="statusFilter">
+          <option value="">All Status</option>
+          <option>Waiting Payment</option>
+          <option>Confirmed</option>
+          <option>In Production</option>
+          <option>Delivered</option>
+          <option>Completed</option>
+          <option>Rejected</option>
+        </select>
+      </div>
+      <div class="history-stats">
+        <div><strong><%= orders.length %></strong><span>Total Orders</span></div>
+        <div>
+          <strong><%= orders.filter((order) => order.status === 'Completed').length %></strong>
+          <span>Completed</span>
+        </div>
+        <div>
+          <strong>Rp <%= orders.reduce((sum, order) => sum + order.totalAmount, 0).toLocaleString('id-ID') %></strong>
+          <span>Total Spent</span>
+        </div>
+      </div>
+      <section class="history-list">
+        <% if (orders.length) { %>
+          <% orders.forEach((order) => { %>
+            <article
+              class="history-card"
+              data-search="<%= (order.orderNumber + ' + order.items.map((item) => item.product?.name || '').join(' ')).toLowerCase() %>"
+              data-status="<%= order.status %>"
+            >
+              <div class="history-card-head">
+                <strong><%= order.orderNumber %></strong>
+                <span class="customer-badge"><%= order.status %></span>
+              </div>
+              <div class="history-card-body">
+                <div class="history-images">
+                  <% order.items.slice(0, 3).forEach((item) => { %>
+                    <img
+                      src="/img/<%= item.product?.image || '' %>"
+                      alt="<%= item.product?.name || 'Product' %>"
+                    />
+                  <% }) %>
+                </div>
+                <div class="history-card-info">
+                  <strong>
+                    <%= order.items.map((item) => `${item.product?.name || 'Product'} ×${item.quantity}`).join(', ') %>
+                  </strong>
+                  <small>Ordered: <%= new Date(order.createdAt).toLocaleDateString('id-ID') %></small>
+                </div>
+                <b class="customer-price">Rp <%= order.totalAmount.toLocaleString('id-ID') %></b>
+              </div>
+              <div class="history-actions">
+                <a href="/customer/tracking/<%= order._id %>"><i class="fa-solid fa-chevron-right"></i> Track Order</a>
+                <a href="/customer/receipt/<%= order._id %>"><i class="fa-solid fa-print"></i> Struk</a>
+                <a href="/customer/payment/<%= order._id %>"><i class="fa-solid fa-receipt"></i> Payment</a>
+              </div>
+            </article>
+          <% }) %>
+        <% } else { %>
+        <div class="empty-reference">
+          <i class="fa-solid fa-box-open"></i>
+          <h2>No orders yet</h2>
+          <p>Pesanan customer dari database akan tampil di sini.</p>
+        </div>
+        <% } %>
+      </section>
+    </main>
+    <script>
+      const search = document.querySelector('#orderSearch');
+      const filter = document.querySelector('#statusFilter');
+      const cards = [...document.querySelectorAll('.history-card')];
+      function apply() {
+        const q = search.value.toLowerCase();
+        cards.forEach((card) => {
+          card.hidden =
+            !card.dataset.search.includes(q) ||
+            Boolean(filter.value && card.dataset.status !== filter.value);
+        });
+      }
+      search.addEventListener('input', apply);
+      filter.addEventListener('change', apply);
+    </script>
+  </body>
+</html>

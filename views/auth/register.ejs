@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=DM+Serif+Text:ital@0;1&family=Libertinus+Math&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/modal.css" />
+  </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #fff8f0;
+    }
+
+    .log-in {
+      display: flex;
+    }
+
+    .image {
+      width: 45%;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.858) 0%,
+        rgba(0, 0, 0, 0.363) 40%,
+        rgba(0, 0, 0, 0.815) 90%
+      );
+      pointer-events: none;
+    }
+
+    .image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+      pointer-events: none;
+    }
+
+    .image-overlay .top-text,
+    .image-overlay .bottom-text {
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+      max-width: 60%;
+      line-height: 35px;
+    }
+
+    .image-overlay .top-text {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      max-width: 100%;
+      align-self: flex-end;
+    }
+
+    /* Logo */
+    .logo-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #fff;
+      font-size: 34px;
+      font-weight: 700;
+
+      flex-shrink: 0;
+    }
+
+    .img-top {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+    }
+
+    /* Text */
+    .brand {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 30px;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: 700;
+      color: #fff;
+      align-self: flex-end;
+    }
+
+    .brand p {
+      margin-top: 8px;
+      margin-bottom: 0;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      align-self: flex-end;
+    }
+
+    .image-overlay .bottom-text {
+      align-self: flex-end;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .content {
+      width: 55%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    form {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-header {
+      margin: 0 0 18px;
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+
+    .form-body {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+    }
+
+    .form-title {
+      font-size: 45px;
+      color: #3d2b1a;
+      font-family: 'Libertinus Math', system-ui;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    p {
+      font-size: 15px;
+      color: #8f6f4f;
+      line-height: -1.5px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .input-group {
+      width: 100%;
+      margin-bottom: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .input-wrapper {
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 40px 0 36px;
+      font-size: 14px;
+      border: 1px solid #c9ae8a;
+      border-radius: 10px;
+      background: #fffdf8;
+      color: #c17d3c;
+      transition: all 0.2s ease;
+    }
+
+    .form-input::placeholder {
+      color: #c9ae8a;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      width: 16px;
+      height: 16px;
+      color: #a37c56;
+      pointer-events: none;
+    }
+
+    .form-label {
+      color: #8e6b47;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .eye-icon {
+      width: 16px;
+      height: 16px;
+      color: #a37c56;
+    }
+
+    .submit-button {
+      position: relative;
+      width: 100%;
+      height: 40px;
+      margin-top: 8px;
+      background: #c17d3c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .button-glow {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .form-footer {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .login-link {
+      color: #8c6b4a;
+      font-size: 13px;
+    }
+
+    .login-link a {
+      color: #c17e3d;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      color: #a86428;
+      text-decoration: underline;
+    }
+
+    .form-input:hover {
+      border-color: #c17e3d;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #c17e3d;
+      background: white;
+      box-shadow: 0 0 0 2px #e8d5c0d4;
+    }
+
+    .password-toggle:hover {
+      color: var(--primary);
+      transform: scale(1.1);
+    }
+
+    .submit-button:hover {
+      background: #b37337;
+      transform: translateY(-1px);
+      box-shadow:
+        0 4px 12px rgba(59, 130, 246, 0.25),
+        0 2px 4px rgba(59, 130, 246, 0.15);
+    }
+
+    .submit-button:hover .button-glow {
+      transform: translateX(100%);
+    }
+
+    .login-link:hover {
+      color: #c17e3d;
+    }
+
+    .login-link:hover span {
+      color: #c17e3d;
+    }
+
+    .submit-button:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .password-toggle:active {
+      transform: scale(0.9);
+    }
+
+    .form-input:not(:placeholder-shown):valid {
+      border-color: var(--success);
+    }
+
+    .form-input:not(:placeholder-shown):valid ~ .input-icon {
+      color: var(--success);
+    }
+
+    .bottom-text {
+      position: absolute;
+      right: 30px;
+      bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: left;
+    }
+
+    .bottom-text-one,
+    .bottom-text-three {
+      font-family: 'DM Serif Text', serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 48px;
+      color: var(--primary);
+      text-align: left;
+    }
+
+    .bottom-text-two {
+      font-family: 'Cormorant', serif;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--primary);
+      font-size: 48px;
+      text-align: left;
+    }
+
+    .sub-text-bottom {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: #c17d3c;
+      line-height: 17px;
+      max-width: 80%;
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .form-alert {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e5a4a4;
+      border-radius: 10px;
+      background: #fff1f1;
+      color: #9f2d2d;
+      font-size: 13px;
+      line-height: 1.4;
+      grid-column: 1 / -1;
+    }
+
+    .form-input.input-error {
+      border-color: #c65353;
+      background: #fff8f8;
+    }
+
+    .form-input.input-error:focus {
+      border-color: #c65353;
+      box-shadow: 0 0 0 2px rgba(198, 83, 83, 0.16);
+    }
+
+    .field-error {
+      margin-top: 5px;
+      color: #b44444;
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+  </style>
+
+  <body>
+    <div class="log-in">
+      <div class="content">
+        <form action="/auth/register" method="POST" class="modern-form" novalidate>
+          <div class="form-header">
+            <div class="form-title">Create your account</div>
+            <p>Join thousands of snack lovers. It's free.</p>
+          </div>
+
+          <div class="form-body">
+            <div class="input-group">
+              <label for="email" class="form-label">Email</label>
+              <div class="input-wrapper">
+                <svg fill="none" viewBox="0 0 24 24" class="input-icon">
+                  <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="14"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  ></rect>
+
+                  <path
+                    d="M4 7L12 13L20 7"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+                <input
+                  type="text"
+                  class="form-input <%= typeof errors !== 'undefined' && errors.email ? 'input-error' : '' %>"
+                  id="email"
+                  placeholder="Email"
+                  name="email"
+                  value="<%= typeof values !== 'undefined' && values.email ? values.email : '' %>"
+                />
+              </div>
+              <% if (typeof errors !== 'undefined' && errors.email) { %>
+              <div class="field-error"><%= errors.email %></div>
+              <% } %>
+            </div>
+
+            <div class="input-group">
+              <label for="fullname" class="form-label">Fullname</label>
+              <div class="input-wrapper">
+                <svg fill="none" viewBox="0 0 24 24" class="input-icon">
+                  <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"></circle>
+
+                  <path
+                    d="M5 20C5 16.6863 8.13401 14 12 14C15.866 14 19 16.6863 19 20"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  ></path>
+                </svg>
+                <input
+                  type="text"
+                  class="form-input <%= typeof errors !== 'undefined' && errors.fullname ? 'input-error' : '' %>"
+                  id="fullname"
+                  name="fullname"
+                  placeholder="Fullname"
+                  value="<%= typeof values !== 'undefined' && values.fullname ? values.fullname : '' %>"
+                />
+              </div>
+              <% if (typeof errors !== 'undefined' && errors.fullname) { %>
+              <div class="field-error"><%= errors.fullname %></div>
+              <% } %>
+            </div>
+
+            <div class="input-group">
+              <label for="username" class="form-label">Username</label>
+              <div class="input-wrapper">
+                <svg fill="none" viewBox="0 0 24 24" class="input-icon">
+                  <circle stroke-width="1.5" stroke="currentColor" cx="12" cy="12" r="9"></circle>
+                  <path
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke="currentColor"
+                    d="M16 12V10.5C16 8.567 14.433 7 12.5 7C10.567 7 9 8.567 9 10.5V13.5C9 15.433 10.567 17 12.5 17C14.433 17 16 15.433 16 13.5"
+                  ></path>
+                  <path
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke="currentColor"
+                    d="M16 12C16 13.105 16.895 14 18 14C19.105 14 20 13.105 20 12V11"
+                  ></path>
+                </svg>
+                <input
+                  type="text"
+                  class="form-input <%= typeof errors !== 'undefined' && errors.username ? 'input-error' : '' %>"
+                  id="username"
+                  name="username"
+                  placeholder="Username"
+                  value="<%= typeof values !== 'undefined' && values.username ? values.username : '' %>"
+                />
+              </div>
+              <% if (typeof errors !== 'undefined' && errors.username) { %>
+              <div class="field-error"><%= errors.username %></div>
+              <% } %>
+            </div>
+
+            <div class="input-group">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-wrapper">
+                <svg fill="none" viewBox="0 0 24 24" class="input-icon">
+                  <rect
+                    x="5"
+                    y="10"
+                    width="14"
+                    height="10"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  ></rect>
+
+                  <path
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke="currentColor"
+                    d="M8 10V7C8 4.791 9.791 3 12 3C14.209 3 16 4.791 16 7V10"
+                  ></path>
+                </svg>
+                <input
+                  type="password"
+                  class="form-input <%= typeof errors !== 'undefined' && errors.password ? 'input-error' : '' %>"
+                  placeholder="Password"
+                  id="password"
+                  name="password"
+                />
+                <button class="password-toggle" type="button">
+                  <svg fill="none" viewBox="0 0 24 24" class="eye-icon">
+                    <path
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2 12S5 5 12 5s10 7 10 7-3 7-10 7S2 12 2 12Z"
+                    ></path>
+
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"></circle>
+                  </svg>
+                </button>
+              </div>
+              <% if (typeof errors !== 'undefined' && errors.password) { %>
+              <div class="field-error"><%= errors.password %></div>
+              <% } %>
+            </div>
+
+            <div class="input-group">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <div class="input-wrapper">
+                <svg fill="none" viewBox="0 0 24 24" class="input-icon">
+                  <rect
+                    x="7"
+                    y="2"
+                    width="10"
+                    height="20"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  ></rect>
+
+                  <circle cx="12" cy="18" r="0.8" fill="currentColor"></circle>
+                </svg>
+                <input
+                  type="text"
+                  class="form-input <%= typeof errors !== 'undefined' && errors.phoneNumber ? 'input-error' : '' %>"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  placeholder="Phone Number"
+                  value="<%= typeof values !== 'undefined' && values.phoneNumber ? values.phoneNumber : '' %>"
+                />
+              </div>
+              <% if (typeof errors !== 'undefined' && errors.phoneNumber) { %>
+              <div class="field-error"><%= errors.phoneNumber %></div>
+              <% } %>
+            </div>
+
+            <div class="input-group">
+              <label for="address" class="form-label">Address</label>
+              <div class="input-wrapper">
+                <svg fill="none" viewBox="0 0 24 24" class="input-icon">
+                  <path
+                    d="M12 21C12 21 18 15.5 18 10C18 6.686 15.314 4 12 4C8.686 4 6 6.686 6 10C6 15.5 12 21 12 21Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linejoin="round"
+                  ></path>
+
+                  <circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.5"></circle>
+                </svg>
+                <input
+                  type="text"
+                  class="form-input <%= typeof errors !== 'undefined' && errors.address ? 'input-error' : '' %>"
+                  id="address"
+                  placeholder="Address"
+                  name="address"
+                  value="<%= typeof values !== 'undefined' && values.address ? values.address : '' %>"
+                />
+              </div>
+              <% if (typeof errors !== 'undefined' && errors.address) { %>
+              <div class="field-error"><%= errors.address %></div>
+              <% } %>
+            </div>
+          </div>
+
+          <button class="submit-button" type="submit">
+            <span class="button-text"
+              >Register
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                class="bi bi-arrow-right-short"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"
+                /></svg
+            ></span>
+            <div class="button-glow"></div>
+          </button>
+
+          <div class="form-footer">
+            <p class="login-link">
+              Already have an account?
+              <a href="/auth/login">Login</a>
+            </p>
+          </div>
+        </form>
+      </div>
+      <div class="image">
+        <img src="/img/bg-register.jpg" alt="" />
+        <div class="image-overlay">
+          <div class="top-text">
+            <div class="brand">
+              <h1>Cravely</h1>
+              <p>Crave It, Love It</p>
+            </div>
+
+            <div class="logo-circle">
+              <img
+                src="/img/logo.png"
+                alt="Cravely Logo"
+                class="img-top"
+                style="border-radius: 50%"
+              />
+            </div>
+          </div>
+          <div class="bottom-text">
+            <p class="bottom-text-one">Start your</p>
+            <p class="bottom-text-two">snack journey</p>
+            <p class="bottom-text-three">with us.</p>
+
+            <div class="sub-text-bottom">
+              Fresh snacks, simple pre-orders, and a delightful experience await.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const passwordInput = document.getElementById('password');
+      const passwordToggle = document.querySelector('.password-toggle');
+      const eyeIcon = document.querySelector('.eye-icon');
+
+      const eye = `
+            <path
+                d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7S3.732 16.057 2.458 12Z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+            </path>
+    
+            <circle
+                cx="12"
+                cy="12"
+                r="3"
+                stroke="currentColor"
+                stroke-width="1.5">
+            </circle>
+        `;
+
+      const eyeSlash = `
+            <path
+                d="M3 3L21 21"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round">
+            </path>
+    
+            <path
+                d="M10.58 10.58A2 2 0 0013.42 13.42"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+            </path>
+    
+            <path
+                d="M9.88 5.09A10.94 10.94 0 0112 5c4.48 0 8.27 2.94 9.54 7a10.8 10.8 0 01-2.69 4.19"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+            </path>
+    
+            <path
+                d="M6.23 6.23A10.82 10.82 0 002.46 12C3.73 16.06 7.52 19 12 19c1.61 0 3.14-.38 4.49-1.06"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+            </path>
+        `;
+
+      passwordToggle.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+
+        passwordInput.type = isPassword ? 'text' : 'password';
+
+        eyeIcon.innerHTML = isPassword ? eyeSlash : eye;
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <%- include('../partials/status-modal') %>
+  </body>
+</html>

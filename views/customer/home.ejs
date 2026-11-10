@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/product-customer.css">
+</head>
+<body>
+
+    <%- include("../partials/navbar") %>
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <div class="hero-badge">
+                        Batch 12 - Pre Order <%= isPreOrderOpen ? 'now open' : 'currently closed' %>
+                    </div>
+
+                    <h1 class="hero-title">
+                        Snacks worth
+                        <span>waiting for.</span>
+                    </h1>
+
+                    <p class="hero-desc">
+                        Small-batch artisan snacks made fresh each cycle.
+                        <%= isPreOrderOpen ? "Browse Sweet & Savory, pre-order, and we'll handle the rest." : "Pre-order is currently closed. Please check back when the next batch opens." %>
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="/customer/products?category=sweet" class="btn sweet-btn">
+                            Sweet Corner
+                        </a>
+                        <a href="/customer/products?category=savory" class="btn savory-btn">
+                            Savory Corner
+                        </a>
+                    </div>
+
+                    <!-- <div class="hero-stats">
+                        <div>
+                            🎁 <strong>3,200+</strong> orders
+                        </div>
+                        <div>
+                            🌱 Fresh ingredients
+                        </div>
+                    </div> -->
+                </div>
+
+                <!-- kanan -->
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <div class="image-large">
+                            <img src="/img/cookies.jpeg" alt="cookies">
+                        </div>
+                        <div class="image-small">
+                            <img src="/img/bread.jpeg" alt="bread">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="flavor-section">
+        <div class="container">
+            <div class="section-heading text-center">
+                <h2>Two worlds of flavour</h2>
+                <p>Choose your corner - or order from both in one cart.</p>
+            </div>
+            <div class="row g-4">
+            <!-- sweet -->
+                <div class="col-lg-6">
+                    <div class="flavor-card sweet-card">
+                        <img src="/img/sweet.jpeg" alt="sweet corner">
+                        <div class="overlay"></div>
+                        <div class="card-content">
+                            <span class="icon">🍬</span>
+                            <h4>Sweet Corner</h4>
+                            <p>Cookies, cakes, macarons & more</p>
+                            <a href="/customer/products?category=sweet" class="sweet-link">Browse Sweet</a>
+                        </div>
+                    </div>
+                </div>
+                    <!-- savory -->
+                <div class="col-lg-6">
+                    <div class="flavor-card savory-card">
+                        <img src="/img/savory.jpeg" alt="savory corner">
+                        <div class="overlay"></div>
+                        <div class="card-content">
+                            <span class="icon">🌿</span>
+                            <h4>Savory Corner</h4>
+                            <p>Crackers, pretzels, popcorn & more</p>
+                            <a href="/customer/products?category=savory" class="savory-link">Browse Savory</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include("../customer/product", { isPartial: true, selectedCategory: "all" }) %>
+
+    <section class="how-section mt-5">
+        <div class="container">
+            <div class="section-heading text-center">
+                <h2>How Cravely Works</h2>
+                <p>Freshly made in batches, simple from order to delivery.</p>
+            </div>
+            <div class="row g-4 mt-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <i class="bi bi-cookie step-icon"></i>
+                        <h4>Choose Snacks</h4>
+                        <p>Browse Sweet Corner and Savory Corner.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <i class="bi bi-cart3 step-icon"></i>
+                        <h4>Place Order</h4>
+                        <p>Add your favorites and complete checkout.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <i class="bi bi-heart step-icon"></i>
+                        <h4>Fresh Production</h4>
+                        <p>We prepare every batch after PO closes.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card">
+                        <div class="step-number">04</div>
+                        <i class="bi bi-truck step-icon"></i>
+                        <h4>Enjoy</h4>
+                        <p>Receive your snacks fresh and ready to enjoy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                        <div>
+                            <h5>Carefully Packed</h5>
+                            <p>Every order packed by hand in eco-friendly boxes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="bi bi-truck"></i>
+                        </div>
+                        <div>
+                            <h5>Reliable Delivery</h5>
+                            <p>Parterned with trusted couries - arrives on time.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <div>
+                            <h5>Quality Guarantee</h5>
+                            <p>Not happy? We'll remake your order, no questions asked.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row gy-5">
+                <!-- Brand -->
+                <div class="col-lg-4">
+                    <div class="footer-brand">
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <div class="logo-circle">C</div>
+                            <h3>Cravely</h3>
+                        </div>
+                        <p>Small-batch artisan snacks made with love. <br>
+                        Pre-order your favorites before each batch sells out.</p>
+
+                        <div class="footer-social">
+                            <a href="#"><i class="bi bi-share"></i></a>
+                            <a href="#"><i class="bi bi-chat"></i></a>
+                            <a href="#"><i class="bi bi-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shop -->
+                <div class="col-lg-3">
+                    <h5>SHOP</h5>
+                    <ul class="footer-links">
+                        <li><a href="/customer/products?category=sweet">Sweet Corner</a></li>
+                        <li><a href="/customer/products?category=savory">Savory Corner</a></li>
+                        <li><a href="#best-sellers">Best Sellers</a></li>
+                        <li><a href="#">Pre-Order Info</a></li>
+                    </ul>
+                </div>
+                <!-- Info -->
+                    <div class="col-lg-2">
+                    <h5>INFO</h5>
+                    <ul class="footer-links">
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- Kontak -->
+                <div class="col-lg-3">
+                    <h5>CONTACT</h5>
+                    <ul class="footer-links">
+                        <li class="bi bi-geo-alt">Malang, Indonesia</li>
+                        <li>hello@cravely.id</li>
+                        <li>Pre-Orders open every 1st & 15th</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="footer-bottom">
+                <p>© 2026 Cravely. All rights reserved.</p>
+                <div class="footer-policy">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>    
+</body>
+</html>

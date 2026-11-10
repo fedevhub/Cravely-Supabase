@@ -1,0 +1,790 @@
+/* ==========================================================
+   PALET WARNA & VARIABLE
+   ========================================================== */
+:root {
+  --bg-main: #fcf8f2;
+  --card-bg: #ffffff;
+  --table-header-bg: #f7efe5;
+  --text-heading: #3a2218;
+  --text-body: #695d56;
+  --primary-btn: #be753d;
+  --primary-btn-hover: #a3612f;
+  --border-color: #eeded1;
+  --font-heading: 'DM Serif Text', serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+  background: #fff8f0;
+  font-family: var(--font-sans);
+  color: #332317;
+  margin: 0;
+}
+
+.user-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.main {
+  flex: 1;
+  background: #fff8f0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 0;
+}
+
+.main-content {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  background: #fff8f0;
+}
+
+/* Container khusus area tabel yang dapat di-scroll */
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
+  padding-bottom: 20px;
+
+  /* Sembunyikan scrollbar di Firefox & IE/Edge */
+  -ms-overflow-style: none !important;
+  /* IE dan Edge */
+  scrollbar-width: none !important;
+  /* Firefox */
+}
+
+/* Sembunyikan scrollbar di Chrome, Safari, dan Opera */
+.scroll-container::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+/* Opsional: Hapus background thumb & track agar bersih total */
+.scroll-container::-webkit-scrollbar-thumb,
+.scroll-container::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+/* ==========================================================
+   HEADER SECTION
+   ========================================================== */
+.page-title {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.page-subtitle {
+  color: #8c7d75;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.btn-primary-custom {
+  background-color: var(--primary-btn);
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.4rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--primary-btn-hover);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(190, 117, 61, 0.25);
+}
+
+.btn-secondary-custom {
+  background-color: #e2d7ce;
+  color: #554840;
+  border: none;
+  padding: 0.65rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 600;
+}
+
+/* ==========================================================
+   FILTER PILLS
+   ========================================================== */
+.filter-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pill-btn {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-body);
+  padding: 0.45rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.pill-btn:hover {
+  border-color: var(--primary-btn);
+  color: var(--primary-btn);
+}
+
+.pill-btn.active {
+  background-color: #38251e;
+  color: #ffffff;
+  border-color: #38251e;
+}
+
+/* ==========================================================
+   SEARCH BAR
+   ========================================================== */
+.search-box {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.8rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--text-heading);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--primary-btn);
+  box-shadow: 0 0 0 3px rgba(190, 117, 61, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a89a90;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================
+   FILTER & SEARCH BAR STYLING
+   ========================================================== */
+.table-controls-wrapper {
+  background-color: #ffffff;
+  border: 1.5px solid #e8dec8;
+  border-radius: 14px;
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.search-input-group {
+  position: relative;
+  min-width: 260px;
+}
+
+.search-input-group i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #c17d3c;
+  font-size: 14px;
+  z-index: 5;
+}
+
+.search-input-group .form-control {
+  padding-left: 35px;
+  /* Memberi ruang untuk ikon kanta pembesar */
+}
+
+/* ==========================================================
+   OVAL BROWN THEME FILTER DROPDOWN
+   ========================================================== */
+
+/* ==========================================================
+   SQUARE BROWN FILTER DROPDOWN
+   ========================================================== */
+
+/* Tombol Utama Filter (Kotak Coklat Modern) */
+.btn-filter-square {
+  background-color: #ffffff;
+  border: 1.5px solid #e8dec8;
+  border-radius: 12px;
+  /* Kembalikan ke bentuk kotak lembut */
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #4b3421;
+  min-width: 160px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.btn-filter-square:hover,
+.btn-filter-square:focus,
+.btn-filter-square[aria-expanded='true'] {
+  background-color: #fcf8f3;
+  border-color: #c17d3c;
+  color: #3b2917;
+  box-shadow: 0 0 0 3px rgba(193, 125, 60, 0.15);
+}
+
+/* Menu Dropdown Opsi */
+.dropdown-menu-brown {
+  border-radius: 14px;
+  border: 1.5px solid #e8dec8;
+  padding: 6px;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0 10px 25px rgba(75, 52, 33, 0.12);
+}
+
+.dropdown-menu-brown .dropdown-item {
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #4b3421;
+  transition: all 0.2s ease;
+}
+
+/* Hover pada Opsi */
+.dropdown-menu-brown .dropdown-item:hover {
+  background-color: #f7ede2;
+  color: #a86428;
+}
+
+/* Opsi Terpilih (Warna Coklat Gradien) */
+.dropdown-menu-brown .dropdown-item.active,
+.dropdown-menu-brown .dropdown-item:active {
+  background: linear-gradient(135deg, #c17d3c, #a86428);
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* Container Menu Opsi */
+.dropdown-menu-brown {
+  border-radius: 16px;
+  border: 1.5px solid #e8dec8;
+  padding: 6px;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0 10px 25px rgba(75, 52, 33, 0.12);
+}
+
+/* Item Opsi Dropdown */
+.dropdown-menu-brown .dropdown-item {
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #4b3421;
+  transition: all 0.2s ease;
+}
+
+/* Warna saat Hover pada opsi */
+.dropdown-menu-brown .dropdown-item:hover {
+  background-color: #f7ede2;
+  color: #a86428;
+}
+
+/* Warna saat Opsi Terpilih (Coklat Tema Utama) */
+.dropdown-menu-brown .dropdown-item.active,
+.dropdown-menu-brown .dropdown-item:active {
+  background: linear-gradient(135deg, #c17d3c, #a86428);
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* ==========================================================
+   CARD & TABLES
+   ========================================================== */
+.custom-card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  padding: 1.5rem;
+}
+
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-size: 1.4rem;
+  margin-bottom: 0.2rem;
+}
+
+.section-subtitle {
+  font-size: 0.85rem;
+  color: #8c7d75;
+  margin-bottom: 0;
+}
+
+/* Sticky Header Table */
+.custom-table {
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.custom-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--table-header-bg);
+  color: #7a6356;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.9rem 1rem;
+  border: none;
+}
+
+.custom-table thead th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.custom-table thead th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.custom-table tbody tr td {
+  padding: 1rem;
+  border-bottom: 1px solid #f5ede6;
+  font-size: 0.88rem;
+  color: var(--text-body);
+}
+
+.custom-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.user-fullname {
+  font-weight: 700;
+  color: var(--text-heading);
+  font-size: 0.92rem;
+}
+
+.user-username {
+  font-weight: 500;
+  color: #8c7d75;
+}
+
+/* ==========================================================
+   STATUS BADGES & BUTTONS
+   ========================================================== */
+.status-badge {
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-admin {
+  background-color: #fce8db;
+  color: #b55d25;
+}
+
+.badge-customer {
+  background-color: #e2f0d9;
+  color: #386e24;
+}
+
+.badge-readonly {
+  background-color: #f0f0f0;
+  color: #6c757d;
+  border: 1px solid #e0e0e0;
+}
+
+.btn-action {
+  background: transparent;
+  border: none;
+  color: #a89a90;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-action.edit:hover {
+  background-color: #f7efe5;
+  color: var(--primary-btn);
+}
+
+.btn-action.delete:hover {
+  background-color: #fde8e8;
+  color: #dc3545;
+}
+
+/* ==========================================================
+   MODAL STYLING (WARM GRADIENT THEME)
+   ========================================================== */
+.modal-dialog {
+  max-width: 550px;
+  margin: 1.75rem auto;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #c17d3c, #a86428);
+  color: #ffffff;
+  border: none;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title {
+  font-family: Georgia, 'Cormorant', serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.modal-body {
+  padding: 20px 22px;
+  max-height: calc(80vh - 70px);
+  overflow-y: auto;
+}
+
+.modal-body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+/* Untuk Firefox dan Internet Explorer / Edge */
+.modal-body {
+  -ms-overflow-style: none;
+  /* IE dan Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Form Controls */
+.form-label {
+  font-size: 13px;
+  color: #4b3421;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-control,
+.form-select {
+  border: 1.5px solid #e8dec8;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13.5px;
+  color: #3b2917;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.form-control::placeholder {
+  color: #bfae9e;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #c17d3c;
+  box-shadow: 0 0 0 3px rgba(193, 125, 60, 0.15);
+  outline: none;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 75px;
+}
+
+/* Action Buttons */
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.btn-cancel {
+  flex: 1;
+  border: 1.5px solid #d0c2b3;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f7f4ef;
+  color: #635041;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #e2dbd3;
+  color: #3b2917;
+}
+
+.btn-submit {
+  flex: 1;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  background: linear-gradient(135deg, #c17d3c, #a86428);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-submit:hover {
+  background: linear-gradient(135deg, #a86428, #8e511e);
+  box-shadow: 0 4px 12px rgba(193, 125, 60, 0.25);
+}
+
+.confirm-modal .modal-dialog {
+  max-width: 330px;
+}
+
+.confirm-modal .modal-content {
+  border: 1px solid rgba(193, 125, 60, 0.16);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fffdf8;
+  box-shadow: 0 18px 48px rgba(61, 43, 26, 0.24);
+}
+
+.confirm-modal .modal-body {
+  position: relative;
+  padding: 26px 24px 22px;
+  text-align: center;
+  isolation: isolate;
+  --status-main: #b85c38;
+  --status-deep: #7b341c;
+  --status-soft: rgba(184, 92, 56, 0.14);
+  --status-glow: rgba(184, 92, 56, 0.18);
+}
+
+.confirm-modal .modal-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 248, 238, 0.86), rgba(255, 253, 248, 0.98));
+  z-index: -3;
+  pointer-events: none;
+}
+
+.confirm-modal .modal-body::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42px;
+  background: linear-gradient(
+    90deg,
+    transparent 0 10%,
+    var(--status-soft) 10% 26%,
+    transparent 26% 34%,
+    var(--status-soft) 34% 58%,
+    transparent 58% 66%,
+    var(--status-soft) 66% 90%,
+    transparent 90% 100%
+  );
+  opacity: 0.46;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.confirm-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #8f6f4f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.confirm-modal-icon {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  margin: 4px auto 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffe9df;
+  font-size: 22px;
+  background: rgba(193, 125, 60, 0.08);
+  box-shadow:
+    0 0 0 8px rgba(193, 125, 60, 0.06),
+    0 12px 24px rgba(61, 43, 26, 0.1);
+}
+
+.confirm-modal-icon::after {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: var(--status-main);
+  box-shadow:
+    inset 0 -5px 10px rgba(0, 0, 0, 0.12),
+    0 8px 16px var(--status-glow);
+  z-index: -1;
+}
+
+.confirm-modal-spark {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  color: #c9ae8a;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.confirm-modal-spark::before,
+.confirm-modal-spark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  background: currentColor;
+  border-radius: 999px;
+}
+
+.confirm-modal-spark::before {
+  width: 2px;
+  height: 100%;
+}
+
+.confirm-modal-spark::after {
+  width: 100%;
+  height: 2px;
+}
+
+.confirm-modal-spark.one {
+  top: 50px;
+  left: 84px;
+}
+
+.confirm-modal-spark.two {
+  top: 62px;
+  right: 82px;
+  transform: scale(0.78);
+}
+
+.confirm-modal-title {
+  margin: 0 0 8px;
+  color: var(--status-deep);
+  font-family: 'DM Serif Text', Georgia, serif;
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 400;
+}
+
+.confirm-modal-message {
+  margin: 0 auto 20px;
+  color: #6f563e;
+  font-size: 13px;
+  line-height: 1.48;
+  max-width: 240px;
+}
+
+/* TOMBOL DUAL AKSI (BATAL & YA HAPUS) */
+.confirm-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-confirm-cancel {
+  min-width: 95px;
+  border: 1px solid rgba(193, 125, 60, 0.28);
+  border-radius: 10px;
+  background: #f7f1e8;
+  color: #7b593f;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+
+.btn-confirm-cancel:hover {
+  background: #ebdccb;
+  color: #4b3421;
+}
+
+.btn-confirm-delete {
+  min-width: 105px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(180deg, var(--status-main), var(--status-deep));
+  color: #fff;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 18px var(--status-glow);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  cursor: pointer;
+}
+
+.btn-confirm-delete:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px var(--status-glow);
+}

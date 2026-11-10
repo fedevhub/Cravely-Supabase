@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=DM+Serif+Text:ital@0;1&family=Libertinus+Math&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,60 1,700;1,80₀;1,9₀&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/order.css">
+    <link rel="stylesheet" href="/css/modal.css">
+</head>
+
+<body>
+    <div class="product-container">
+        <%- include('../partials/sidebar') %>
+
+            <div class="main">
+                <div class="main-content">
+                    <div class="product-management-wrapper">
+                        <div class="content-header">
+                            <div class="title-section">
+                                <h1 class="page-title">Order Management</h1>
+                                <p class="page-subtitle">
+                                    <%= orders.length %> orders
+                                </p>
+                            </div>
+                            <button class="btn-primary-custom" data-bs-toggle="modal"
+                                data-bs-target="#tambahProdukModal">
+                                <i class="fas fa-download"></i> Export Excel
+                            </button>
+                        </div>
+
+                        <div class="filter-search-row">
+                            <div class="filter-tabs">
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="waiting payment">
+                                    Waiting Payment
+                                </button>
+                                <button class="filter-btn" data-filter="confirmed">
+                                    Confirmed
+                                </button>
+                                <button class="filter-btn" data-filter="in production">
+                                    In Production
+                                </button>
+                                <button class="filter-btn" data-filter="delivered">
+                                    Delivered
+                                </button>
+                                <button class="filter-btn" data-filter="completed">
+                                    Completed
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" placeholder="Search orders..." class="search-input">
+                        </div>
+                    </div>
+
+                    <div class="scroll-container">
+                        <div class="custom-card mb-3 mt-3 card-admin-wrapper">
+                            <div class="table-responsive">
+                                <table class="table custom-table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>ORDER</th>
+                                            <th>CUSTOMER</th>
+                                            <th>ITEM</th>
+                                            <th>TOTAL</th>
+                                            <th>PAYMENT</th>
+                                            <th>STATUS</th>
+                                            <th class="text-end">AKSI</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <% if (orders.length> 0) { %>
+                                            <% orders.forEach(order=> { %>
+                                                <tr>
+                                                    <td class="user-fullname">
+                                                        <%= order.orderNumber %><br>
+                                                            <span>
+                                                                <%= new
+                                                                    Date(order.createdAt).toLocaleDateString("id-ID") %>
+                                                            </span>
+                                                    </td>
+
+                                                    <td class="user-fullname">
+                                                        <%= order.user.fullname %><br>
+                                                            <span>
+                                                                <%= order.user.email %>
+                                                            </span>
+                                                    </td>
+
+                                                    <td>
+                                                        <% order.items.forEach(item=> { %>
+                                                            <div>
+                                                                <%= item.product.name %> x<%= item.quantity %>
+                                                            </div>
+                                                            <% }) %>
+                                                    </td>
+                                                    <td>
+                                                        Rp <%= order.totalAmount.toLocaleString("id-ID") %>
+                                                    </td>
+                                                    <td>
+                                                        <%= order.paymentMethod %>
+                                                    </td>
+                                                    <td>
+                                                        <span class="status-badge badge-admin">
+                                                            <%= order.status %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <button type="button" class="btn-action edit" data-bs-toggle="modal" data-bs-target="#detailOrderModal<%= order._id %>">
+
+                                                            <i class="fa-regular fa-eye"></i>
+
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+                                                <!-- Modal Detail & Update Status Order -->
+                                                <div class="modal fade" id="detailOrderModal<%= order._id %>" tabindex="-1"
+                                                    aria-labelledby="detailOrderModalLabel<%= order._id %>" aria-hidden="true">
+                                                    <!-- TAMBAHKAN modal-dialog-scrollable DI SINI -->
+                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+                                                        <div class="modal-content custom-modal-content">
+
+                                                            <!-- Modal Header (Akan tetap diam di atas saat discroll) -->
+                                                            <div class="modal-header custom-modal-header">
+                                                                <h5 class="modal-title custom-modal-title" id="detailOrderModalLabel<%= order._id %>">
+                                                                    Detail Pesanan <span class="order-id-badge">#<%= order._id.toString().substring(18,
+                                                                            24).toUpperCase() %></span>
+                                                                </h5>
+                                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                            </div>
+
+                                                            <!-- Modal Body (Hanya bagian ini yang bisa di-scroll) -->
+                                                            <div class="modal-body custom-modal-body">
+                                                                <form action="/dashboard/orders/<%= order._id %>/status" method="POST" class="needs-confirm"
+                                                                    data-confirm-message="Simpan perubahan status pesanan ini?">
+
+                                                                    <!-- Informasi Pelanggan -->
+                                                                    <div class="row g-3 mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <label class="form-label fw-bold">Nama Lengkap</label>
+                                                                            <input type="text" class="form-control" readonly
+                                                                                value="<%= order.user ? order.user.fullname : '-' %>">
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label class="form-label fw-bold">Email</label>
+                                                                            <input type="email" class="form-control" readonly
+                                                                                value="<%= order.user ? order.user.email : '-' %>">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label fw-bold">Alamat Pengiriman</label>
+                                                                        <textarea class="form-control" rows="2" readonly><%= order.shippingAddress || '-' %></textarea>
+                                                                    </div>
+
+                                                                    <!-- Item Pesanan -->
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label fw-bold">Item Pesanan</label>
+                                                                        <div class="custom-item-container">
+                                                                            <% if (order.items && order.items.length> 0) { %>
+                                                                                <% order.items.forEach(item=> { %>
+                                                                                    <div class="custom-item-row">
+                                                                                        <div>
+                                                                                            <div class="fw-bold text-dark">
+                                                                                                <%= item.product ? item.product.name : 'Produk' %>
+                                                                                            </div>
+                                                                                            <small class="text-muted">Jumlah: <%= item.quantity %></small>
+                                                                                        </div>
+                                                                                        <div class="fw-bold price-text">
+                                                                                            Rp <%= (item.price || 0).toLocaleString("id-ID") %>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <% }) %>
+                                                                                        <% } else { %>
+                                                                                            <div class="text-muted small">Tidak ada item.</div>
+                                                                                            <% } %>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label fw-bold">Catatan Pelanggan</label>
+                                                                        <textarea class="form-control" rows="2"
+                                                                            readonly><%= order.customerNote || "Tidak ada catatan dari pelanggan." %></textarea>
+                                                                    </div>
+
+                                                                    <!-- Pembayaran -->
+                                                                    <div class="row g-3 mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <label class="form-label fw-bold">Metode Pembayaran</label>
+                                                                            <input type="text" class="form-control" readonly value="<%= order.paymentMethod || '-' %>">
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label class="form-label fw-bold">Total Pembayaran</label>
+                                                                            <input type="text" class="form-control fw-bold price-text-input" readonly
+                                                                                value="Rp <%= (order.totalAmount || 0).toLocaleString('id-ID') %>">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Status Pesanan -->
+                                                                    <div class="mb-4">
+                                                                        <label class="form-label fw-bold">Update Status Pesanan</label>
+                                                                        <select class="form-select" name="status">
+                                                                            <option value="Waiting Payment" <%=order.status==='Waiting Payment' ? 'selected'
+                                                                                : '' %>>Waiting Payment</option>
+                                                                            <option value="Confirmed" <%=order.status==='Confirmed' ? 'selected' : '' %>>Confirmed
+                                                                            </option>
+                                                                            <option value="In Production" <%=order.status==='In Production' ? 'selected' : '' %>>In
+                                                                                Production</option>
+                                                                            <option value="Delivered" <%=order.status==='Delivered' ? 'selected' : '' %>>Delivered
+                                                                            </option>
+                                                                            <option value="Completed" <%=order.status==='Completed' ? 'selected' : '' %>>Completed
+                                                                            </option>
+                                                                            <option value="Cancelled" <%=order.status==='Cancelled' ? 'selected' : '' %>>Cancelled
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <!-- Tombol Action -->
+                                                                    <div class="row g-3 mt-2">
+                                                                        <div class="col-4">
+                                                                            <button type="button" class="btn btn-modal-batal w-100 py-2"
+                                                                                data-bs-dismiss="modal">Batal</button>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <a href="/dashboard/orders/<%= order._id %>/receipt"
+                                                                                class="btn w-100 py-2"
+                                                                                style="background:linear-gradient(180deg,#c9803b,#8a4316);color:#fff;border-radius:8px;">
+                                                                                <i class="fa-solid fa-print me-1"></i> Print Struk
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <button type="submit" class="btn btn-modal-simpan w-100 py-2">
+                                                                                <i class="fa-solid fa-floppy-disk me-1"></i> Simpan
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                                    <% } else { %>
+                                                        <tr class="no-data-row">
+                                                            <td colspan="7" class="text-center py-4 text-muted">
+                                                                Belum ada data Order.
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<%- include('../partials/confirm-modal') %>
+
+<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const searchInput = document.getElementById('searchInput');
+                const productItems = document.querySelectorAll('.orders-item');
+
+                let currentFilter = 'all';
+                let searchQuery = '';
+
+                function filterProducts() {
+                    productItems.forEach(item => {
+                        const titleElement = item.querySelector('.card-title');
+                        const orderName = titleElement ? titleElement.textContent.toLowerCase() : '';
+
+                        const orderCategory = item.getAttribute('data-category');
+                        const matchesCategory = (currentFilter === 'all') || (productCategory === currentFilter);
+                        const matchesSearch = productName.includes(searchQuery);
+                        if (matchesCategory && matchesSearch) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+
+                        currentFilter = this.getAttribute('data-filter');
+                        filterProducts();
+                    });
+                });
+
+                searchInput.addEventListener('input', function () {
+                    searchQuery = this.value.toLowerCase().trim();
+                    filterProducts();
+                });
+            });
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,457 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-main: #fcf8f2;
+  --card-bg: #ffffff;
+  --table-header-bg: #f7efe5;
+  --text-heading: #3a2218;
+  --text-body: #695d56;
+  --primary-btn: #be753d;
+  --primary-btn-hover: #a3612f;
+  --border-color: #eeded1;
+  --font-heading: 'DM Serif Text', serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #fff8f0;
+  color: #332317;
+  overflow: hidden;
+}
+
+.product-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.main {
+  flex: 1;
+  background: #fff8f0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.main-content {
+  padding: 30px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  background: #fff8f0;
+}
+
+.product-management-wrapper {
+  width: 100%;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  flex-shrink: 0;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px !important;
+}
+
+.page-title {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.page-subtitle {
+  color: #8c7d75;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.filter-search-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-btn {
+  background: #ffffff;
+  border: 1px solid #e0d0c1;
+  color: #5c4230;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background-color: #fcf8f5;
+  border-color: #c67d38;
+}
+
+.filter-btn.active {
+  background-color: #c67d38;
+  color: #ffffff;
+  border-color: #c67d38;
+}
+
+.search-box {
+  position: relative;
+  width: 280px;
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a38d7d;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 9px 14px 9px 38px;
+  border: 1px solid #e0d0c1;
+  border-radius: 20px;
+  background-color: #ffffff;
+  font-size: 13px;
+  color: #3b2917;
+  outline: none;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: #b09988;
+}
+
+.search-input:focus {
+  border-color: #c67d38;
+  box-shadow: 0 0 0 3px rgba(198, 125, 56, 0.15);
+}
+
+.btn-primary-custom {
+  background-color: var(--primary-btn);
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.4rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--primary-btn-hover);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(190, 117, 61, 0.25);
+}
+
+.btn-secondary-custom {
+  background-color: #e2d7ce;
+  color: #554840;
+  border: none;
+  padding: 0.65rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 600;
+}
+
+/* ==========================================================
+   CARD & TABLES
+   ========================================================== */
+.custom-card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  padding: 1.5rem;
+}
+
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-size: 1.4rem;
+  margin-bottom: 0.2rem;
+}
+
+.section-subtitle {
+  font-size: 0.85rem;
+  color: #8c7d75;
+  margin-bottom: 0;
+}
+
+/* Sticky Header Table */
+.custom-table {
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.custom-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--table-header-bg);
+  color: #7a6356;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.9rem 1rem;
+  border: none;
+}
+
+.custom-table thead th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.custom-table thead th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.custom-table tbody tr td {
+  padding: 1rem;
+  border-bottom: 1px solid #f5ede6;
+  font-size: 0.88rem;
+  color: var(--text-body);
+}
+
+.custom-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.user-fullname {
+  font-weight: 700;
+  color: var(--text-heading);
+  font-size: 0.92rem;
+}
+
+.user-username {
+  font-weight: 500;
+  color: #8c7d75;
+}
+
+/* ==========================================================
+   STATUS BADGES & BUTTONS
+   ========================================================== */
+.status-badge {
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-admin {
+  background-color: #fce8db;
+  color: #b55d25;
+}
+
+.badge-customer {
+  background-color: #e2f0d9;
+  color: #386e24;
+}
+
+.badge-readonly {
+  background-color: #f0f0f0;
+  color: #6c757d;
+  border: 1px solid #e0e0e0;
+}
+
+.btn-action {
+  background: transparent;
+  border: none;
+  color: #a89a90;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-action.edit:hover {
+  background-color: #f7efe5;
+  color: var(--primary-btn);
+}
+
+.btn-action.delete:hover {
+  background-color: #fde8e8;
+  color: #dc3545;
+}
+
+/* Container Modal */
+.custom-modal-content {
+  border-radius: 18px !important;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Header Cokelat Melengkung Atas */
+.custom-modal-header {
+  background-color: #b56c28 !important;
+  /* Warna cokelat sesuai gambar */
+  padding: 18px 24px !important;
+  border-bottom: none !important;
+}
+
+.custom-modal-title {
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 1.35rem;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  /* Mengikuti gaya serif di gambar */
+}
+
+.order-id-badge {
+  font-size: 0.9rem;
+  font-family: sans-serif;
+  opacity: 0.85;
+  font-weight: normal;
+}
+
+/* Body Modal */
+.custom-modal-body {
+  padding: 24px !important;
+  background-color: #ffffff;
+}
+
+.custom-modal-body .form-label {
+  color: #333333;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.custom-modal-body .form-control,
+.custom-modal-body .form-select {
+  border-radius: 10px !important;
+  border: 1px solid #e0e0e0;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+}
+
+.custom-modal-body .form-control[readonly] {
+  background-color: #ffffff !important;
+  color: #444444;
+}
+
+/* List Item Pesanan */
+.custom-item-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.custom-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.custom-item-row:not(:last-child) {
+  border-bottom: 1px dashed #eee;
+}
+
+.price-text,
+.price-text-input {
+  color: #b56c28 !important;
+}
+
+/* Tombol Batal & Simpan */
+.btn-modal-batal {
+  background-color: #f7f3ee !important;
+  color: #4a4a4a !important;
+  border: 1px solid #e8e0d5 !important;
+  border-radius: 10px !important;
+  font-weight: 600;
+}
+
+.btn-modal-batal:hover {
+  background-color: #eee7de !important;
+}
+
+.btn-modal-simpan {
+  background-color: #b56c28 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-weight: 600;
+}
+
+.btn-modal-simpan:hover {
+  background-color: #98581e !important;
+}
+
+/* Membatasi tinggi modal & membuat body-nya scrollable */
+.modal-dialog-scrollable .modal-content {
+  max-height: 85vh;
+  /* Batas tinggi modal relatif terhadap layar */
+  overflow: hidden;
+}
+
+.modal-dialog-scrollable .custom-modal-body {
+  overflow-y: auto;
+  padding: 24px !important;
+}
+
+/* Tetap bisa di-scroll tapi scrollbar-nya tersembunyi */
+.custom-modal-body {
+  overflow-y: auto;
+  /* Untuk Firefox */
+  scrollbar-width: none;
+  /* Untuk Internet Explorer / Edge lama */
+  -ms-overflow-style: none;
+}
+
+/* Untuk Chrome, Safari, dan Opera */
+.custom-modal-body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}

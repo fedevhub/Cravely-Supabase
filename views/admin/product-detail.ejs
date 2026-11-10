@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= product.name %> — Detail Menu
+    </title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/detail-product.css">
+    <link rel="stylesheet" href="/css/modal.css">
+</head>
+
+<body>
+
+    <% if (product.image) { if (product.image.startsWith('http://') || product.image.startsWith('https://') ||
+        product.image.startsWith('/')) { mainImgSrc=product.image; } else { mainImgSrc='/img/' + product.image; } } %>
+
+        <div class="container py-4 py-md-5">
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <a href="javascript:history.back()" class="btn btn-back text-decoration-none">
+                    <i class="fa-solid fa-arrow-left me-2"></i> Kembali ke Menu
+                </a>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-add-detail" data-bs-toggle="modal" data-bs-target="#addDetailModal">
+                        <i class="fa-solid fa-plus me-1"></i> Tambah Catatan
+                    </button>
+                    <button class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editProductModal">
+                        <i class="fa-solid fa-pen-to-square me-1"></i> Edit Menu
+                    </button>
+                </div>
+            </div>
+
+            <div class="card product-card border-0 p-3 p-md-4 mb-4">
+                <div class="row g-4 align-items-start">
+
+
+                    <div class="col-lg-5">
+                        <div class="main-img-container mb-3">
+                            <img id="primaryImage" src="<%= mainImgSrc %>"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x600/f7f2ec/4a2c11?text=Gagal+Load+Gambar';"
+                                class="main-img img-fluid" alt="<%= product.name %>">
+                        </div>
+
+
+                        <div class="gallery-scroll-container d-flex gap-2">
+
+                            <div class="thumb-card active" onclick="switchImage(this, '<%= mainImgSrc %>')">
+                                <img src="<%= mainImgSrc %>"
+                                    onerror="this.onerror=null; this.src='https://placehold.co/150x150/f7f2ec/4a2c11?text=Menu';"
+                                    alt="Thumbnail Utama">
+                            </div>
+
+
+                            <% if (product.gallery && product.gallery.length> 0) { %>
+                                <% product.gallery.forEach(imgUrl=> {
+                                    let gallerySrc = 'https://placehold.co/150x150/f7f2ec/4a2c11?text=Menu';
+                                    if (imgUrl) {
+                                    if (imgUrl.startsWith('http://') || imgUrl.startsWith('https://') ||
+                                    imgUrl.startsWith('/')) {
+                                    gallerySrc = imgUrl;
+                                    } else {
+                                    gallerySrc = '/img/' + imgUrl;
+                                    }
+                                    }
+                                    %>
+                                    <div class="thumb-card" onclick="switchImage(this, '<%= gallerySrc %>')">
+                                        <img src="<%= gallerySrc %>"
+                                            onerror="this.onerror=null; this.src='https://placehold.co/150x150/f7f2ec/4a2c11?text=Menu';"
+                                            alt="Thumbnail Galeri">
+                                    </div>
+                                    <% }) %>
+                                        <% } %>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-7 d-flex flex-column justify-content-between h-100">
+                        <div>
+
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <span class="badge bg-white text-dark border px-3 py-2 rounded-pill fw-semibold">
+                                    <i class="fa-solid fa-utensils me-1 text-muted"></i>
+                                    <%= product.category || 'Umum' %>
+                                </span>
+
+                                <% if (product.isPreOrder) { %>
+                                    <span class="badge badge-po px-3 py-2 rounded-pill fw-semibold">
+                                        <i class="fa-solid fa-clock me-1"></i> Pre-Order
+                                    </span>
+                                    <% } else { %>
+                                        <span class="badge badge-ready px-3 py-2 rounded-pill fw-semibold">
+                                            <i class="fa-solid fa-box-open me-1"></i> Ready Stock
+                                        </span>
+                                        <% } %>
+                            </div>
+
+                            <h1 class="fw-bold text-dark mb-2 display-6">
+                                <%= product.name %>
+                            </h1>
+                            <div class="price-text fw-extrabold fs-2 mb-3">
+                                Rp <%= product.price ? Number(product.price).toLocaleString('id-ID') : '0' %>
+                            </div>
+
+                            <p class="text-secondary mb-4 leading-relaxed">
+                                <%= product.description
+                                    || 'Sajikan kelezatan hidangan ini yang dibuat dengan bahan-bahan pilihan berkualitas tinggi.'
+                                    %>
+                            </p>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-6 col-sm-6">
+                                    <div class="metric-box">
+                                        <div class="metric-icon">
+                                            <i class="fa-solid fa-weight-scale"></i>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-muted x-small uppercase tracking-wider">Ukuran /
+                                                Berat</span>
+                                            <strong class="text-dark">
+                                                <%= product.weight || '-' %>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-6">
+                                    <div class="metric-box">
+                                        <div class="metric-icon">
+                                            <i class="fa-solid fa-users"></i>
+                                        </div>
+                                        <div>
+                                            <span
+                                                class="d-block text-muted x-small uppercase tracking-wider">Porsi</span>
+                                            <strong class="text-dark">
+                                                <%= product.servings || '-' %>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-5 pt-4 border-top">
+                    <ul class="nav nav-tabs custom-tabs mb-4" id="productTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="desc-tab" data-bs-toggle="tab"
+                                data-bs-target="#desc-pane" type="button" role="tab">
+                                <i class="fa-solid fa-align-left me-2"></i> Deskripsi Lengkap
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="ingredients-tab" data-bs-toggle="tab"
+                                data-bs-target="#ingredients-pane" type="button" role="tab">
+                                <i class="fa-solid fa-seedling me-2"></i> Bahan Utama
+                            </button>
+                        </li>
+                        <% if (product.details && product.details.length> 0) { %>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="extra-tab" data-bs-toggle="tab"
+                                    data-bs-target="#extra-pane" type="button" role="tab">
+                                    <i class="fa-solid fa-clipboard-list me-2"></i> Catatan Tambahan
+                                </button>
+                            </li>
+                            <% } %>
+                    </ul>
+
+                    <div class="tab-content" id="productTabContent">
+
+                        <div class="tab-pane fade show active text-secondary lh-lg" id="desc-pane" role="tabpanel">
+                            <p class="mb-0">
+                                <%= product.fullDescription || product.description
+                                    || 'Belum ada penjelasan detail tambahan untuk menu ini.' %>
+                            </p>
+                        </div>
+
+                        <div class="tab-pane fade" id="ingredients-pane" role="tabpanel">
+                            <% if (product.ingredients && product.ingredients.length> 0) { %>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <% product.ingredients.forEach(item=> { %>
+                                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-normal">
+                                            <i class="fa-solid fa-leaf text-success me-1"></i>
+                                            <%= item %>
+                                        </span>
+                                        <% }) %>
+                                </div>
+                                <% } else { %>
+                                    <p class="text-muted fst-italic mb-0">Tidak ada daftar bahan utama yang terdaftar.
+                                    </p>
+                                    <% } %>
+                        </div>
+
+
+                        <% if (product.details && product.details.length> 0) { %>
+                            <div class="tab-pane fade" id="extra-pane" role="tabpanel">
+                                <div class="row g-3">
+                                    <% product.details.forEach(detail=> { %>
+                                        <div class="col-md-6">
+                                            <div class="p-3 border rounded-3 bg-light">
+                                                <h6 class="fw-bold text-dark mb-1">
+                                                    <%= detail.title %>
+                                                </h6>
+                                                <p class="text-muted small mb-0">
+                                                    <%= detail.content %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% }) %>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg rounded-4">
+                    <form action="/dashboard/detailProducts/<%= product._id %>/update" method="POST">
+                        <div class="modal-header border-bottom-0 pb-0">
+                            <h5 class="modal-title fw-bold">Edit Detail Menu</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body py-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Nama Menu</label>
+                                    <input type="text" name="name" class="form-control" value="<%= product.name %>"
+                                        required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-semibold">Harga (Rp)</label>
+                                    <input type="number" name="price" class="form-control" value="<%= product.price %>"
+                                        required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-semibold">Tipe Order</label>
+                                    <select name="isActive" class="form-select">
+                                        <option value="ready stok" <%=product.isActive === 'ready stok' ? 'selected' : '' %>>Ready Stock
+                                        </option>
+                                        <option value="pre order" <%=product.isActive === 'pre order' ? 'selected' : '' %>>Pre-Order
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">URL / File Gambar Utama</label>
+                                    <input type="text" name="image" class="form-control" value="<%= product.image %>"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Ukuran / Berat</label>
+                                    <input type="text" name="weight" class="form-control"
+                                        value="<%= product.detail?.weight || '' %>">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Porsi</label>
+                                    <input type="text" name="servings" class="form-control"
+                                        value="<%= product.detail?.servings || '' %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-top-0 pt-0">
+                            <button type="button" class="btn btn-light rounded-3" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-add-detail">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addDetailModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg rounded-4">
+                    <form action="/dashboard/detailProducts/<%= product._id %>/add" method="POST">
+                        <div class="modal-header border-bottom-0 pb-0">
+                            <h5 class="modal-title fw-bold">Tambah Detail Catatan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body py-4">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Judul Detail / Catatan</label>
+                                <input type="text" name="title" class="form-control"
+                                    placeholder="Misal: Cara Penyimpanan" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Keterangan / Deskripsi</label>
+                                <textarea name="content" class="form-control" rows="3"
+                                    placeholder="Masukkan detail tambahan di sini..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-top-0 pt-0">
+                            <button type="button" class="btn btn-light rounded-3" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-add-detail">Tambah Detail</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function switchImage(element, src) {
+                const mainImg = document.getElementById('primaryImage');
+                if (mainImg) {
+                    mainImg.style.opacity = '0.5';
+                    setTimeout(() => {
+                        mainImg.src = src;
+                        mainImg.style.opacity = '1';
+                    }, 150);
+                }
+
+                const thumbs = document.querySelectorAll('.thumb-card');
+                thumbs.forEach(thumb => thumb.classList.remove('active'));
+                element.classList.add('active');
+            }
+        </script>
+</body>
+
+</html>

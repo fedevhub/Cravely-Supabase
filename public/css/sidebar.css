@@ -1,0 +1,307 @@
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: #332317;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 16px 12px;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.logo-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #c67d38;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: Georgia, 'Times New Roman', serif;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 18px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.brand p {
+  margin: 2px 0 0 0;
+  font-size: 11px;
+  color: #8c7361;
+  font-weight: 400;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Hilangkan scrollbar untuk browser berbasis Webkit (Chrome, Safari, Edge, Opera) */
+.sidebar-nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hilangkan scrollbar untuk Firefox & IE/Edge lama */
+.sidebar-nav {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Style Item Menu */
+.sidebar-nav a {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #c89d7c;
+  text-decoration: none;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  /* Menjaga ukuran item tidak tertekan */
+}
+
+.sidebar-nav a .nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-nav a i {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+}
+
+.sidebar-nav a .nav-arrow {
+  font-size: 11px;
+}
+
+/* State Hover & Active Menu */
+.sidebar-nav a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-nav a.active {
+  color: #ffffff;
+  background: #c67d38;
+  box-shadow: 0 4px 10px rgba(198, 125, 56, 0.25);
+}
+
+.sidebar-nav a.active i {
+  color: #ffffff;
+}
+
+/* Badge Notifikasi */
+.sidebar-nav .badge {
+  background: #c67d38;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer (Static Bottom) */
+.sidebar-footer {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  /* Mencegah footer ciut */
+}
+
+/* Sidebar Footer Layout */
+.sidebar-footer {
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+/* Link Notifikasi di Footer */
+.sidebar-footer .footer-link {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #c89d7c;
+  text-decoration: none;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.sidebar-footer .footer-link .nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-footer .footer-link i {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+}
+
+/* Hover & Active status Notifikasi Bawah */
+.sidebar-footer .footer-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-footer .footer-link.active {
+  color: #ffffff;
+  background: #c67d38;
+}
+
+/* Badge Notifikasi */
+.sidebar-footer .badge {
+  background: #c67d38;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ubah warna badge jika item notifikasi aktif */
+.sidebar-footer .footer-link.active .badge {
+  background: #ffffff;
+  color: #c67d38;
+}
+
+/* Profil User */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 4px;
+}
+
+.user-profile .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #c67d38;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.user-info .user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.user-info .user-email {
+  font-size: 11px;
+  color: #8c7361;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tombol Exit Admin */
+.exit-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #c89d7c;
+  text-decoration: none;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.exit-btn i {
+  font-size: 14px;
+}
+
+.exit-btn:hover {
+  color: #ffffff;
+}

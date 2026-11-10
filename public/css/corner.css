@@ -1,0 +1,423 @@
+:root {
+  --cream: #f7f2eb;
+  --brown: #3e2a1f;
+  --caramel: #c9843d;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--cream);
+}
+
+/* ===== NAVBAR (shared - sama persis dengan home.css) ===== */
+
+.custom-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  padding: 18px 0;
+}
+
+.logo-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--caramel);
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+.nav-link {
+  color: var(--brown);
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: var(--caramel);
+}
+
+.active-pill {
+  background: var(--caramel);
+  color: white !important;
+  border-radius: 50px;
+  padding: 6px 18px !important;
+}
+
+.nav-icons a {
+  color: var(--brown);
+  font-size: 22px;
+  transition: 0.3s;
+}
+
+.nav-icons a:hover {
+  color: var(--caramel);
+}
+
+/* ===== HERO khusus Corner ===== */
+
+.corner-hero {
+  padding: 80px 0;
+  background: #fbe4f0;
+}
+
+.corner-hero h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--brown);
+  margin-bottom: 15px;
+}
+
+.corner-hero p {
+  font-size: 1.1rem;
+  color: #6d625b;
+  margin-bottom: 25px;
+}
+
+.corner-stats {
+  display: flex;
+  gap: 20px;
+  color: #8c6a4d;
+  font-weight: 500;
+}
+
+/* ===== SEARCH & FILTER ===== */
+
+.search-section {
+  margin-top: 20px;
+}
+
+.products-section {
+  padding: 60px 0;
+}
+
+.search-bar {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-bar input {
+  flex: 1;
+  border: 1px solid #e7d8c7;
+  border-radius: 18px;
+  padding: 15px 20px;
+  background: white;
+}
+
+.search-bar select {
+  border: 1px solid #e7d8c7;
+  border-radius: 999px;
+  padding: 15px 22px;
+  min-width: 240px;
+  background: white;
+  color: var(--brown);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.search-bar button {
+  background: var(--caramel);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 25px;
+  font-weight: 600;
+}
+
+/* ===== PRODUCT CARD khusus Corner ===== */
+
+.product-card {
+  position: relative;
+  background: white;
+  border: 1px solid #e7d8c7;
+  border-radius: 24px;
+  overflow: hidden;
+  height: 100%;
+  transition: 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.product-body {
+  padding: 20px;
+}
+
+.product-body h5 {
+  color: var(--brown);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.product-body p {
+  color: #6d625b;
+  font-size: 0.95rem;
+  min-height: 50px;
+}
+
+.product-capacity {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #8c6a4d;
+}
+
+.progress {
+  height: 8px;
+  border-radius: 999px;
+  background: #efe7df;
+}
+
+.progress-bar {
+  background: #7fa482;
+  border-radius: 999px;
+}
+
+.product-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-footer span {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--caramel);
+}
+
+.product-footer button {
+  background: var(--caramel);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  width: 45px;
+  height: 45px;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.badge-best {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+
+  background: #ffb84d;
+  color: white;
+
+  padding: 8px 15px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ===== MIX & MATCH (Sweet + Savory) ===== */
+
+.mix-section {
+  padding: 40px 0 80px;
+}
+
+.mix-box {
+  background: white;
+  border: 1px solid #e7d8c7;
+  border-radius: 28px;
+  padding: 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.mix-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mix-icon {
+  font-size: 40px;
+}
+
+.mix-left h3 {
+  color: var(--brown);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.mix-left p {
+  margin: 0;
+  color: #6d625b;
+}
+
+.mix-btn {
+  background: var(--caramel);
+  color: white;
+  text-decoration: none;
+
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.mix-btn:hover {
+  color: white;
+}
+
+/* ===== FOOTER (shared - sama persis dengan home.css) ===== */
+
+.footer {
+  background: #4a2d1a;
+  padding: 80px 0 30px;
+  margin-top: 100px;
+}
+
+.footer h3 {
+  color: white;
+  margin: 0;
+}
+
+.footer h5 {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.footer p {
+  color: #d4a06a;
+  line-height: 1.8;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 18px;
+  color: #d4a06a;
+}
+
+.footer-links a {
+  color: #d4a06a;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.footer-social a {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #e0b07d;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-social a:hover {
+  background: var(--caramel);
+  color: white;
+}
+
+.footer-divider {
+  border-color: rgba(255, 255, 255, 0.1);
+  margin: 60px 0 30px;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+.footer-policy {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.footer-policy a {
+  color: #a77b52;
+  text-decoration: none;
+}
+
+.footer-policy a:hover {
+  color: white;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .corner-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .search-bar input,
+  .search-bar select,
+  .search-bar button {
+    width: 100%;
+  }
+
+  .mix-box {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mix-left {
+    flex-direction: column;
+  }
+}
