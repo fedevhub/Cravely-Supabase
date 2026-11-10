@@ -103,7 +103,8 @@ body {
 }
 
 .hero-content {
-  padding-top: 24px;
+  padding-top: 0;
+  transform: translateY(-45px);
 }
 
 .hero-badge {
@@ -145,28 +146,38 @@ body {
   flex-wrap: wrap;
 }
 
+/* ===== HERO BUTTON COLORS ===== */
+
+/* Sweet - Pink */
 .sweet-btn {
-  background: #c9843d;
-  color: white;
+  background: rgba(232, 166, 191, 0.55) !important;
+  border: 2px solid rgba(232, 166, 191, 0.7) !important;
+  color: #3e2a1f !important;
   border-radius: 999px;
   padding: 12px 24px;
+  transition: all 0.3s ease;
 }
 
 .sweet-btn:hover {
-  background: #b67634;
-  color: white;
+  background: #e8a6bf !important;
+  border-color: #e8a6bf !important;
+  color: #3e2a1f !important;
 }
 
+/* Savory - Green */
 .savory-btn {
-  border: 2px solid #7e9c72;
-  color: #7e9c72;
+  background: rgba(126, 156, 114, 0.55) !important;
+  border: 2px solid rgba(126, 156, 114, 0.7) !important;
+  color: #3e2a1f !important;
   border-radius: 999px;
   padding: 12px 24px;
+  transition: all 0.3s ease;
 }
 
 .savory-btn:hover {
-  background: #7e9c72;
-  color: white;
+  background: #7e9c72 !important;
+  border-color: #7e9c72 !important;
+  color: white !important;
 }
 
 .hero-stats {
@@ -214,7 +225,14 @@ body {
   display: block;
 }
 
+/* ===== RESPONSIVE ===== */
+
 @media (max-width: 992px) {
+  .hero-content {
+    transform: translateY(-15px);
+    padding-top: 0;
+  }
+
   .hero-title {
     font-size: 3.5rem;
   }
@@ -237,11 +255,21 @@ body {
   }
 }
 
-/* ===== TWO WORLDS OF FLAVOR ===== */
+@media (max-width: 576px) {
+  .hero-content {
+    transform: translateY(-5px);
+  }
+
+  .hero-title {
+    font-size: 2.8rem;
+  }
+}
+
+/* ===== TWO WORLDS OF FLAVOUR ===== */
 
 .flavor-section {
   padding: 100px 0;
-  background-color: #f0dac6;
+  background-color: #e8c9aa;
 }
 
 .section-heading {
@@ -276,7 +304,12 @@ body {
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.55);
+  transition: background 0.3s ease;
+}
+
+.flavor-card:hover .overlay {
+  background: rgba(0, 0, 0, 0.65);
 }
 
 .card-content {
@@ -296,30 +329,53 @@ body {
   font-family: 'Playfair Display', serif;
   font-weight: 600;
   margin: 10px 0;
+  color: #ffffff;
 }
 
 .card-content p {
   font-size: 15px;
   margin-bottom: 10px;
-  color: #c2c1c0;
+  color: #f5eee7;
 }
 
+/* Tombol Two Worlds */
+
 .card-content a {
+  display: inline-block;
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
+  padding: 11px 25px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
 }
 
-.sweet-link {
-  color: #ffd6e7;
-  text-decoration: none;
-  font-weight: 600;
+/* Sweet - Pink */
+.flavor-card .sweet-link {
+  background-color: rgba(232, 166, 191, 0.55);
+  color: #1f1a15;
+  border: 1px solid rgba(232, 166, 191, 0.7);
 }
 
-.savory-link {
-  color: #d7f0c2;
-  text-decoration: none;
-  font-weight: 600;
+.flavor-card .sweet-link:hover {
+  background-color: #e8a6bf;
+  color: #1f1a15;
+  border-color: #e8a6bf;
+  transform: translateY(-3px);
+}
+
+/* Savory - Green */
+.flavor-card .savory-link {
+  background-color: rgba(126, 156, 114, 0.55);
+  color: #1f1a15;
+  border: 1px solid rgba(126, 156, 114, 0.7);
+}
+
+.flavor-card .savory-link:hover {
+  background-color: #7e9c72;
+  color: #1f1a15;
+  border-color: #7e9c72;
+  transform: translateY(-3px);
 }
 
 /* ===== BEST SELLERS (product card khusus Home) ===== */
